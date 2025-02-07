@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StuAuthMobile.Page.Main"
+             BackgroundColor="LightGray"
+             Title="Home">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="CustomButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="FontSize" Value="14"/>
+            </Style>
+
+            <Style x:Key="ChargedButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="1"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BorderWidth" Value="1"/>
+
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="Auto"/>
+            <RowDefinition Height="*"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <!-- Ligne 1 -->
+        <Button x:Name="Rename" Text="Renommée" WidthRequest="80" Grid.Row="0" Grid.Column="0" Style="{StaticResource ChargedButton}" Clicked="Rename_Click"/>
+        <Button x:Name="Add" Text="+" WidthRequest="50" Grid.Row="0" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="Add_Click"/>
+        <Button x:Name="Del" Text="-" WidthRequest="50" Grid.Row="0" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="Del_Click"/>
+        <Button x:Name="Help" Text="?" WidthRequest="50" Grid.Row="0" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Help_Click"/>
+
+        <!-- Ligne 2 -->
+        <Button x:Name="SyncApp" WidthRequest="50" HeightRequest="50" Text="Synchro entre appli" Grid.Row="1" Grid.Column="0" Style="{StaticResource ChargedButton}" Clicked="SyncApp_Click"/>
+        <ImageButton x:Name="SyncTime" WidthRequest="50" HeightRequest="50" Source="Icone/synchro.png" Grid.Row="1" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="TimeSynchro"/>
+        <Button x:Name="Server" WidthRequest="50" HeightRequest="50" Background="Red" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="Serveur_Connect"/>
+        <Button x:Name="Back" WidthRequest="50" HeightRequest="50" Text="&#60;--" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
+
+        <!--Ligne 3 -->
+        <Label x:Name="FolderName" Text="S" FontSize="20" Margin="5,0" Grid.Row="2" Grid.ColumnSpan="4"/>
+
+        <!--Ligne 4 -->
+        <ListView x:Name="AccountList" Grid.Row="3" HorizontalOptions="FillAndExpand" ItemsSource="{Binding AccountButtons}" Margin="10" Grid.ColumnSpan="4" BackgroundColor="White">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <StackLayout>
+                                <!-- Bouton Dossier -->
+                                <Button Text="{Binding Text}" Style="{StaticResource CustomButton}" Pressed="OnButtonPressed" Clicked="OpenFolder" IsVisible="{Binding IsFolder}"/>
+
+                                <!-- Bouton Compte IsVisible="{Binding IsFolder, Converter={StaticResource InverseBoolConverter}}"-->
+                                <Button Text="{Binding Text}" Style="{StaticResource CustomButton}" Pressed="OnButtonPressed" Clicked="AccountView" />
+                            </StackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
+    </Grid>
+</ContentPage>

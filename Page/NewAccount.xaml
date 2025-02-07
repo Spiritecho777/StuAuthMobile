@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             xmlns:zxing="clr-namespace:ZXing.Net.Maui;assembly=ZXing.Net.MAUI"
+             xmlns:zxingc="clr-namespace:ZXing.Net.Maui.Controls;assembly=ZXing.Net.MAUI.Controls"
+             x:Class="StuAuthMobile.Page.NewAccount"
+             Title="NewAccount"
+             BackgroundColor="LightGray">
+
+    <ContentPage.Resources>
+        <Style TargetType="Button" x:Key="ChargedButton">
+            <Setter Property="HeightRequest" Value="40"/>
+            <Setter Property="HorizontalOptions" Value="End"/>
+            <Setter Property="VerticalOptions" Value="Start"/>
+            <Setter Property="BackgroundColor" Value="Transparent"/>
+            <Setter Property="CornerRadius" Value="5"/>
+            <Setter Property="TextColor" Value="Black"/>
+            <Setter Property="BorderColor" Value="Black"/>
+            <Setter Property="BorderWidth" Value="1"/>
+        </Style>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+        
+        <!-- Boutons -->
+        <Button x:Name="Retour" Grid.Row="0" Grid.Column="0" Text="Retour" Margin="5" WidthRequest="80" Clicked="Back" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="Import" Grid.Column="2" Grid.Row="0" Text="Import" Margin="5" WidthRequest="80" Clicked="Import_Click" Style="{StaticResource ChargedButton}"/>
+
+        <!-- Labels et TextBox -->
+        <!--<Label Text="Clé Secrète [A-Za-z0-9]:" Grid.Row="1" FontSize="20" HorizontalTextAlignment="End" VerticalOptions="Start" HeightRequest="35" Margin="0,392,40,0" WidthRequest="330"/>
+        <Entry x:Name="SecretKey" HorizontalTextAlignment="End" VerticalOptions="Start" HeightRequest="35" Margin="0,430,40,0" WidthRequest="330"/>-->
+
+        <!-- Boutons pour QRcode et Confirmer -->
+        <Button x:Name="QRcapture" Grid.Row="1" Grid.Column="1" Text="QRcode" Margin="5" WidthRequest="80" Clicked="Capture" Style="{StaticResource ChargedButton}"/>
+        <!--<Button x:Name="Valider" Grid.Row="2" Grid.Column="2" Text="Confirmer" VerticalOptions="End" HorizontalOptions="End" Margin="5" WidthRequest="100" Clicked="Confirm" Style="{StaticResource ChargedButton}"/>-->
+
+        <zxingc:CameraBarcodeReaderView x:Name="scannerView" Grid.Row="3" Margin="0,100" Grid.ColumnSpan="3" IsVisible="Hidden" BarcodesDetected="OnBarcodeDetected" IsDetecting="True" IsTorchOn="False" VerticalOptions="FillAndExpand"/>
+    </Grid>
+</ContentPage>
