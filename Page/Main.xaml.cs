@@ -6,6 +6,8 @@ using Microsoft.Maui.Controls.Shapes;
 using static System.Net.Mime.MediaTypeNames;
 using System.Collections.Generic;
 using Microsoft.VisualBasic;
+using System.Net.NetworkInformation;
+using System.Net;
 
 namespace StuAuthMobile.Page;
 
@@ -297,9 +299,61 @@ public partial class Main : ContentPage
         UpdateFolderList();
     }
 
-    private void SyncApp_Click(object sender, EventArgs e)
+    private async void SyncApp_Click(object sender, EventArgs e)
     {
+        Debug.WriteLine("Scanning réseau...");
+        await ScanNetworkAsync("192.168.1");
+    }
+    #endregion
 
+    #region Scan reseau
+    public static async Task ScanNetworkAsync(string subnet)
+    {
+        List<Task> tasks = new List<Task>();
+
+        for (int i = 1; i < 255; i++)
+        {
+            string ip = $"{subnet}.{i}";
+            Debug.WriteLine($"IP actuel:{ip}");
+            tasks.Add(Task.Run(() => PingHost(ip)));
+        }
+
+        await Task.WhenAll(tasks);
+    }
+
+    private static void PingHost(string ipAddress)
+    {
+        try
+        {
+            using (Ping ping = new Ping())
+            {
+                PingReply reply = ping.Send(ipAddress, 500); // Timeout 500ms
+
+                if (reply.Status == IPStatus.Success)
+                {
+                    string hostName = GetHostName(ipAddress);
+                    Debug.WriteLine($"{ipAddress} - {hostName}");
+                }
+                else
+                {
+                    Debug.WriteLine("non");
+                }
+            }
+        }
+        catch { }
+    }
+
+    private static string GetHostName(string ipAddress)
+    {
+        try
+        {
+            IPHostEntry hostEntry = Dns.GetHostEntry(ipAddress);
+            return hostEntry.HostName;
+        }
+        catch
+        {
+            return "Nom d'hôte introuvable";
+        }
     }
     #endregion
 
@@ -307,3 +361,4 @@ public partial class Main : ContentPage
 
     #endregion
 }
+

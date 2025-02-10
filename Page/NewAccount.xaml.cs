@@ -4,22 +4,13 @@ using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
 using Google.Protobuf;
 using Migration;
-//using ZXing.Net.Maui;
-//using ZXing.Net.Maui.Controls;
-using System.Drawing;
 using System.Text;
 using System.Web;
-using Point = System.Drawing.Point;
-using Rectangle = System.Drawing.Rectangle;
-using Color = System.Drawing.Color;
 using System.Diagnostics;
 using ZXing.QrCode.Internal;
 
-//using Cursors = System.Windows.Forms.Cursors;
-
 public partial class NewAccount : ContentPage
 {
-    private Point startPoint;
     private MainPage main;
     private Main menu;
     private List<string> AccountList = new List<string>();
@@ -32,106 +23,6 @@ public partial class NewAccount : ContentPage
         this.main = main;
         this.menu = menu;
     }
-
-    /*private string DecodeQRCode(Bitmap bitmap)
-    {
-        BarcodeReader reader = new BarcodeReader();
-
-        Result result = reader.Decode(bitmap);
-
-        if (result != null)
-        {
-            if (result.Text.Contains("migration"))
-            {
-                string otpauth = result.Text;
-                int dataIndex = otpauth.IndexOf("data=") + "data=".Length;
-                string base64Data = otpauth.Substring(dataIndex);
-                base64Data = HttpUtility.UrlDecode(base64Data);
-
-                byte[] bytes = Convert.FromBase64String(base64Data);
-                List<ByteString> SecretPayload = DecodeProtobufSecret(bytes);
-                List<string> AccountPayload = DecodeProtobufAccount(bytes);
-                for (int i = 0; i < SecretPayload.Count; i++)
-                {
-                    string secret = Base32Encode(SecretPayload[i], false);
-                    string Account = AccountPayload[i];
-                    AccountList.Add("otpauth://totp/" + Account + "?secret=" + secret + "&digits=6&period=30");
-                }
-
-                main.Visibility = Visibility.Visible;
-                main.ImportM(AccountList, menu, fName);
-
-                return otpauth;
-            }
-            else
-            {
-                main.Visibility = Visibility.Visible;
-                main.NewAccount(result.Text.ToString(), menu, fName);
-                return result.Text;
-            }
-        }
-        else
-        {
-            main.Visibility = Visibility.Visible;
-            System.Windows.MessageBox.Show("Pas de QR code trouver");
-            return "Pas de QR code trouver";
-        }
-    }
-
-    #region Méthode
-    private void StartSelection(Screen screen)
-    {
-        main.Hide();
-
-        Rectangle screenBounds = screen.Bounds;
-        using (Bitmap screenBitmap = new Bitmap(screenBounds.Width, screenBounds.Height))
-        {
-
-            using (Graphics g = Graphics.FromImage(screenBitmap))
-            {
-                g.CopyFromScreen(screenBounds.X, screenBounds.Y, 0, 0, screenBounds.Size);
-            }
-
-            using (Form selectionForm = new Form())
-            {
-                selectionForm.StartPosition = FormStartPosition.Manual;
-                selectionForm.Location = screen.Bounds.Location;
-
-                selectionForm.FormBorderStyle = FormBorderStyle.None;
-                selectionForm.WindowState = FormWindowState.Maximized;
-                selectionForm.Cursor = Cursors.Cross;
-
-                PictureBox pictureBox = new PictureBox();
-                Rectangle selectedRegion = new Rectangle();
-                pictureBox.Dock = DockStyle.Fill;
-                pictureBox.Image = screenBitmap;
-                pictureBox.MouseDown += (sender, e) =>
-                {
-                    startPoint = e.Location;
-                };
-                pictureBox.MouseMove += (sender, e) =>
-                {
-                    if (e.Button == MouseButtons.Left)
-                    {
-                        ControlPaint.DrawReversibleFrame(selectedRegion, Color.Black, FrameStyle.Dashed);
-                        selectedRegion = new Rectangle(Math.Min(startPoint.X, e.X), Math.Min(startPoint.Y, e.Y), Math.Abs(startPoint.X - e.X), Math.Abs(startPoint.Y - e.Y));
-                        ControlPaint.DrawReversibleFrame(selectedRegion, Color.Black, FrameStyle.Dashed);
-                    }
-                };
-                pictureBox.MouseUp += (sender, e) =>
-                {
-                    selectionForm.Close();
-                    Bitmap selectedBitmap = new Bitmap(selectedRegion.Width, selectedRegion.Height);
-                    Graphics selectedGraphics = Graphics.FromImage(selectedBitmap);
-                    selectedGraphics.DrawImage(screenBitmap, 0, 0, selectedRegion, GraphicsUnit.Pixel);
-                    string qrCodeData = DecodeQRCode(selectedBitmap);
-                };
-
-                selectionForm.Controls.Add(pictureBox);
-                selectionForm.ShowDialog();
-            }
-        }
-    }*/
 
     #region Bouton
     private void Capture(object sender, EventArgs e)
@@ -205,21 +96,18 @@ public partial class NewAccount : ContentPage
                     AccountList.Add("otpauth://totp/" + Account + "?secret=" + secret + "&digits=6&period=30");
                 }
 
-                //main.Visibility = Visibility.Visible;
                 main.ImportM(AccountList, menu, fName);
 
                 return otpauth;
             }
             else
             {
-                //main.Visibility = Visibility.Visible;
                 main.NewAccount(result.ToString(), menu, fName);
                 return result;
             }
         }
         else
         {
-            //main.Visibility = Visibility.Visible;
             DisplayAlert("Erreur","Pas de QR code trouver","OK");
             return "Pas de QR code trouver";
         }

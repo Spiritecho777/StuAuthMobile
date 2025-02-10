@@ -22,7 +22,6 @@
                 <Setter Property="TextColor" Value="Black"/>
                 <Setter Property="BorderColor" Value="Black"/>
                 <Setter Property="BorderWidth" Value="1"/>
-
             </Style>
         </ResourceDictionary>
     </ContentPage.Resources>

@@ -25,7 +25,7 @@ namespace StuAuthMobile
 
         public async void ImportM(List<string> Account, Main menu, string folderName)
         {
-            //await Navigation.PushAsync(new Import(Account, menu, folderName));
+            await Navigation.PushAsync(new Import(Account, menu, folderName));
         }
     }
 }

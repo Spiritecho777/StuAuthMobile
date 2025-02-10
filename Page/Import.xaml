@@ -5,7 +5,46 @@
              Title="Import"
              BackgroundColor="LightGray">
 
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ChargedButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="1"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BorderWidth" Value="1"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+    
     <Grid>
-        
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Button x:Name="Confirm" Text="Confirmer" Grid.Row="1" WidthRequest="100" Margin="5" Grid.Column="1" HorizontalOptions="End" Style="{StaticResource ChargedButton}" Clicked="Confirm_Click"/>
+        <Button x:Name="Back" Grid.Row="1" Text="Retour" Grid.Column="0" Margin="5" HorizontalOptions="Start" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
+
+        <ListView x:Name="ListOtp" ItemsSource="{Binding AccountListAdd}" BackgroundColor="White" Margin="5" Grid.ColumnSpan="2">
+            <ListView.ItemTemplate>
+                <DataTemplate>
+                    <ViewCell>
+                        <ViewCell.View>
+                            <HorizontalStackLayout>
+                                <CheckBox IsChecked="{Binding IsChecked}"/>
+                                <Label Text="{Binding Name}" VerticalOptions="Center"/>
+                            </HorizontalStackLayout>
+                        </ViewCell.View>
+                    </ViewCell>
+                </DataTemplate>
+            </ListView.ItemTemplate>
+        </ListView>
     </Grid>
 </ContentPage>
