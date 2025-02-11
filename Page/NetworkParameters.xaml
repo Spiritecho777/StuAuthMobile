@@ -1,0 +1,50 @@
+<?xml version="1.0" encoding="utf-8" ?>
+<ContentPage xmlns="http://schemas.microsoft.com/dotnet/2021/maui"
+             xmlns:x="http://schemas.microsoft.com/winfx/2009/xaml"
+             x:Class="StuAuthMobile.Page.NetworkParameters"
+             Title="NetworkParameters"
+             BackgroundColor="LightGray">
+
+    <ContentPage.Resources>
+        <ResourceDictionary>
+            <Style x:Key="ChargedButton" TargetType="Button">
+                <Setter Property="BackgroundColor" Value="Transparent"/>
+                <Setter Property="CornerRadius" Value="5"/>
+                <Setter Property="FontSize" Value="14"/>
+                <Setter Property="Margin" Value="1"/>
+                <Setter Property="TextColor" Value="Black"/>
+                <Setter Property="BorderColor" Value="Black"/>
+                <Setter Property="BorderWidth" Value="1"/>
+            </Style>
+        </ResourceDictionary>
+    </ContentPage.Resources>
+
+    <Grid>
+        <Grid.RowDefinitions>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+            <RowDefinition Height="auto"/>
+        </Grid.RowDefinitions>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
+        </Grid.ColumnDefinitions>
+
+        <Label Text="App" Grid.Row="0" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand" Margin="5,5,0,0"/>
+        <Entry x:Name="AppNetwork" Placeholder="Entrez le réseau a scanner" Grid.Row="1" Grid.ColumnSpan="2" Completed="AppNetworkChanged"/>
+        <Picker x:Name="AppIP" Title="Selectionne un adresse IP" Grid.Row="2" Grid.ColumnSpan="2" Margin="0,-10,0,0" SelectedIndexChanged="RegisterIPA"/>
+        
+        <Label Text="Serveur" Grid.Row="3" Grid.ColumnSpan="2" HorizontalOptions="StartAndExpand" Margin="5,20,0,0"/>
+        <Entry x:Name="ServNetwork" Placeholder="Entrez le réseau a scanner" Grid.Row="4" Grid.ColumnSpan="2" Completed="ServeurNetworkChanged"/>
+        <Picker x:Name="ServIP" Title="Selectionne un adresse IP" Grid.Row="5" Grid.ColumnSpan="2" Margin="0,-10,0,30" SelectedIndexChanged="RegisterIPS"/>
+
+        <Button x:Name="Retour" Text="Retour" Grid.Row="7" WidthRequest="80" Grid.ColumnSpan="2" Clicked="Back" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="Synchro" Text="Synchronisation" FontSize="12" Grid.Row="6" Grid.Column="0" Clicked="Sync" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="Serv" Text="Connexion" Grid.Row="6" FontSize="12" Grid.Column="1" Clicked="Serveur" Style="{StaticResource ChargedButton}"/>
+    </Grid>
+</ContentPage>

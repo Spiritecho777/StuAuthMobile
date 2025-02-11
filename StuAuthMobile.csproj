@@ -97,6 +97,9 @@
 	  <MauiXaml Update="Page\Main.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>
+	  <MauiXaml Update="Page\NetworkParameters.xaml">
+	    <Generator>MSBuild:Compile</Generator>
+	  </MauiXaml>
 	  <MauiXaml Update="Page\NewAccount.xaml">
 	    <Generator>MSBuild:Compile</Generator>
 	  </MauiXaml>

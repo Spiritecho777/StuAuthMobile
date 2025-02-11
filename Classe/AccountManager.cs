@@ -21,8 +21,8 @@ namespace StuAuthMobile.Classe
                 Directory.CreateDirectory(appDirectory);
             }
 
-            filePathE = System.IO.Path.Combine(appDirectory, "_Account.dat");
-            filePath = System.IO.Path.Combine(appDirectory, "_Account_decrypted.dat");
+            filePathE = System.IO.Path.Combine(appDirectory, "Account.dat");
+            filePath = System.IO.Path.Combine(appDirectory, "Account_decrypted.dat");
 
             if (File.Exists(filePathE))
             {
