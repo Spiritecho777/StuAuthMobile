@@ -72,15 +72,6 @@ namespace StuAuthMobile.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à null.
         /// </summary>
-        internal static string IPServeur {
-            get {
-                return ResourceManager.GetString("IPServeur", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à null.
-        /// </summary>
         internal static string KeyPass {
             get {
                 return ResourceManager.GetString("KeyPass", resourceCulture);
