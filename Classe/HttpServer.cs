@@ -4,10 +4,12 @@ using System.Diagnostics;
 using System.IO;
 using System.Linq;
 using System.Net;
+using System.Net.Sockets;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using System.Text.Json;
+using System.Net.WebSockets;
 using StuAuthMobile.Page;
 
 namespace StuAuthMobile.Classe
@@ -63,6 +65,16 @@ namespace StuAuthMobile.Classe
             string responseAccountString = string.Empty;
             string responseFolderString = string.Empty;
 
+            if (context.Request.HttpMethod == "OPTIONS")
+            {
+                context.Response.StatusCode = 204; // Pas de contenu
+                context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+                context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+                context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
+                context.Response.OutputStream.Close();
+                return;
+            }
+
             if (context.Request.Url.AbsolutePath == "/")
             {
                 responseAccountString = GetAccounts();
@@ -79,6 +91,10 @@ namespace StuAuthMobile.Classe
             string jsonResponse = JsonSerializer.Serialize(responseObject);
 
             byte[] buffer = Encoding.UTF8.GetBytes(jsonResponse);
+
+            context.Response.Headers.Add("Access-Control-Allow-Origin", "*");
+            context.Response.Headers.Add("Access-Control-Allow-Methods", "GET, POST, OPTIONS");
+            context.Response.Headers.Add("Access-Control-Allow-Headers", "Content-Type");
 
             context.Response.ContentType = "application/json";
             context.Response.ContentLength64 = buffer.Length;

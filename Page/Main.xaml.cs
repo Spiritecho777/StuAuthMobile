@@ -31,6 +31,7 @@ public partial class Main : ContentPage
 	{
 		InitializeComponent();
         pages = page;
+        server = new HttpServer(this);
         AccountList.ItemsSource = AccountButtons;
         UpdateFolderList();
     }
@@ -278,9 +279,9 @@ public partial class Main : ContentPage
         }
     }
 
-    private void Serveur_Connect(object sender, EventArgs e)
+    private async void Serveur_Connect(object sender, EventArgs e)
     {
-        // Logique pour la connexion au serveur
+        await Navigation.PushAsync(new NetworkParameters(this, server));
     }
 
     private void Help_Click(object sender, EventArgs e)
@@ -299,10 +300,6 @@ public partial class Main : ContentPage
         UpdateFolderList();
     }
 
-    private async void SyncApp_Click(object sender, EventArgs e)
-    {
-        await Navigation.PushAsync(new NetworkParameters());
-    }
     #endregion  
 
     #region Méthode

@@ -48,9 +48,8 @@
         <Button x:Name="Help" Text="?" WidthRequest="50" Grid.Row="0" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Help_Click"/>
 
         <!-- Ligne 2 -->
-        <Button x:Name="SyncApp" WidthRequest="50" HeightRequest="50" Text="Synchro entre appli" Grid.Row="1" Grid.Column="0" Style="{StaticResource ChargedButton}" Clicked="SyncApp_Click"/>
         <ImageButton x:Name="SyncTime" WidthRequest="50" HeightRequest="50" Source="Icone/synchro.png" Grid.Row="1" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="TimeSynchro"/>
-        <Button x:Name="Server" WidthRequest="50" HeightRequest="50" Background="Red" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="Serveur_Connect"/>
+        <Button x:Name="ServeurConnect" x:FieldModifier="public" WidthRequest="50" HeightRequest="50" Background="Red" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="Serveur_Connect"/>
         <Button x:Name="Back" WidthRequest="50" HeightRequest="50" Text="&#60;--" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
 
         <!--Ligne 3 -->
