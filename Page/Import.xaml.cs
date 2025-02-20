@@ -7,12 +7,14 @@ namespace StuAuthMobile.Page;
 public partial class Import : ContentPage
 {
     Main menu;
+    AccountManager accountManager;
     List<string> Account = new List<string>();
     string fName;
     public ObservableCollection<CheckBoxItem> AccountListAdd { get; set; } = new();
-    public Import(List<string> AccountList, Main window, string folderName)
+    public Import(List<string> AccountList, Main window, string folderName, AccountManager accountManager)
 	{
 		InitializeComponent();
+        this.accountManager = accountManager;
         menu = window;
         fName = folderName;
 
@@ -105,7 +107,7 @@ public partial class Import : ContentPage
                     try
                         {
                             var uri = new Uri(part[1]);
-                            AccountManager accountManager = new AccountManager();
+                            //AccountManager accountManager = new AccountManager();
                             accountManager.AddAccount(line);
                         }
                         catch

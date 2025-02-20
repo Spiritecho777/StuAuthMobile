@@ -53,7 +53,7 @@
         <Button x:Name="Back" WidthRequest="50" HeightRequest="50" Text="&#60;--" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
 
         <!--Ligne 3 -->
-        <Label x:Name="FolderName" Text="S" FontSize="20" Margin="5,0" Grid.Row="2" Grid.ColumnSpan="4"/>
+        <Label x:Name="FolderName" TextColor="Black" Text="S" FontSize="20" Margin="5,0" Grid.Row="2" Grid.ColumnSpan="4"/>
 
         <!--Ligne 4 -->
         <ListView x:Name="AccountList" Grid.Row="3" HorizontalOptions="FillAndExpand" ItemsSource="{Binding AccountButtons}" Margin="10" Grid.ColumnSpan="4" BackgroundColor="White">

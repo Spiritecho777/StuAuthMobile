@@ -57,6 +57,10 @@
 	</ItemGroup>
 
 	<ItemGroup>
+	  <None Remove="Platforms\Android\NetworkSecurityConfig.xml" />
+	</ItemGroup>
+
+	<ItemGroup>
 	  <Content Include="Icone\StuAuth.ico" />
 	</ItemGroup>
   

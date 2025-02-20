@@ -188,11 +188,17 @@ public partial class Main : ContentPage
             string Folder = FolderName.Text.ToString();
             if (!string.IsNullOrEmpty(Folder))
             {
-                await Navigation.PushAsync(new NewAccount(pages, this, Folder));
+                await Navigation.PushAsync(new NewAccount(pages, this, Folder, accountManager));
             }
             else //Dossier
             {
                 string FolderN = await DisplayPromptAsync("Ajouter un dossier","Entrez le nom du dossier");
+
+                if (string.IsNullOrWhiteSpace(FolderN))
+                {
+                    await DisplayAlert("Erreur", "Le nom du dossier ne peut pas être vide.", "OK");
+                    return;
+                }
 
                 accountManager.Add(FolderN);
                 UpdateFolderList();
@@ -281,7 +287,7 @@ public partial class Main : ContentPage
 
     private async void Serveur_Connect(object sender, EventArgs e)
     {
-        await Navigation.PushAsync(new NetworkParameters(this, server));
+        await Navigation.PushAsync(new NetworkParameters(this, server,accountManager));
     }
 
     private void Help_Click(object sender, EventArgs e)

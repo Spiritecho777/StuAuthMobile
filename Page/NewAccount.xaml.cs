@@ -8,20 +8,23 @@ using System.Text;
 using System.Web;
 using System.Diagnostics;
 using ZXing.QrCode.Internal;
+using StuAuthMobile.Classe;
 
 public partial class NewAccount : ContentPage
 {
     private MainPage main;
+    private AccountManager accountManager;
     private Main menu;
     private List<string> AccountList = new List<string>();
     private string fName;
 
-    public NewAccount(MainPage main, Main menu, string folderName)
+    public NewAccount(MainPage main, Main menu, string folderName, AccountManager accountManager)
     {
         InitializeComponent();
         fName = folderName;
         this.main = main;
         this.menu = menu;
+        this.accountManager = accountManager;
     }
 
     #region Bouton
@@ -96,13 +99,13 @@ public partial class NewAccount : ContentPage
                     AccountList.Add("otpauth://totp/" + Account + "?secret=" + secret + "&digits=6&period=30");
                 }
 
-                main.ImportM(AccountList, menu, fName);
+                main.ImportM(AccountList, menu, fName, accountManager);
 
                 return otpauth;
             }
             else
             {
-                main.NewAccount(result.ToString(), menu, fName);
+                main.NewAccount(result.ToString(), menu, fName, accountManager);
                 return result;
             }
         }

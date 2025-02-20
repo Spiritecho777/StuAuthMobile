@@ -7,18 +7,21 @@ using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
 using System.Net.Sockets;
 using Xamarin.Essentials;
+using System.Text.Json;
 
 public partial class NetworkParameters : ContentPage
 {
     private Main main;
     private HttpServer server;
-    public ObservableCollection<string> listIPA {  get; set; }
+    private AccountManager accountManager;
+    public ObservableCollection<string> listIPA { get; set; }
     private string IPApplication = Preferences.Get("IPApplication", string.Empty);
-    public NetworkParameters(Main main, HttpServer server)
-	{
-		InitializeComponent();
+    public NetworkParameters(Main main, HttpServer server, AccountManager accountManager)
+    {
+        InitializeComponent();
         this.main = main;
         this.server = server;
+        this.accountManager = accountManager;
         listIPA = new ObservableCollection<string>();
         AppIP.ItemsSource = listIPA;
         AppIP.Title = IPApplication;
@@ -67,7 +70,7 @@ public partial class NetworkParameters : ContentPage
     private async void AppNetworkChanged(object sender, EventArgs e)
     {
         MainThread.BeginInvokeOnMainThread(() => AppIP.ItemsSource = null);
-        if (!string.IsNullOrEmpty(AppNetwork.Text) && IsValidIPAddress(AppNetwork.Text)) 
+        if (!string.IsNullOrEmpty(AppNetwork.Text) && IsValidIPAddress(AppNetwork.Text))
         {
             listIPA.Clear();
             await ScanNetworkAsync(AppNetwork.Text);
@@ -75,7 +78,7 @@ public partial class NetworkParameters : ContentPage
         }
         else
         {
-            DisplayAlert("Erreur", "Veuillez rentrer un réseau correct exemple: 192.168.1","OK");
+            DisplayAlert("Erreur", "Veuillez rentrer un réseau correct exemple: 192.168.1", "OK");
         }
     }
 
@@ -121,15 +124,15 @@ public partial class NetworkParameters : ContentPage
                 if (reply.Status == IPStatus.Success)
                 {
                     string hostName = GetHostName(ipAddress);
-                 
-                    MainThread.BeginInvokeOnMainThread(()=>
+
+                    MainThread.BeginInvokeOnMainThread(() =>
                     {
                         listIPA.Add(ipAddress);
                     });
                 }
             }
         }
-        catch 
+        catch
         {
             Debug.WriteLine($"Erreur lors du ping de {ipAddress}");
         }
@@ -182,27 +185,61 @@ public partial class NetworkParameters : ContentPage
             "Synchronisation",
             "Annuler",
             null,
-            "Exporter",
             "Importer"
         );
-
-        if (answer == "Exporter")
-        {
-            if (!string.IsNullOrWhiteSpace(IPApplication) && IsHostReachable(IPApplication))
-            {
-
-            }
-            else
-            {
-                await DisplayAlert("Erreur", "L'adresse IP n'est pas valide ou inaccessible.", "OK");
-            }
-        }
 
         if (answer == "Importer")
         {
             if (!string.IsNullOrWhiteSpace(IPApplication) && IsHostReachable(IPApplication))
             {
+                string response = await SendRequestAsync("/", "GET");
 
+                try
+                {
+                    Retour.IsEnabled = false;
+                    Serv.IsEnabled = false;
+                    Synchro.IsEnabled = false;
+                    LoadingProgressBar.IsVisible = true;
+                    LoadingProgressBar.Progress = 0;
+
+                    var data = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+
+                    if (data == null || !data.ContainsKey("Accounts") || !data.ContainsKey("Folder"))
+                    {
+                        Console.WriteLine(" Erreur: Données manquantes.");
+                        return;
+                    }
+
+                    string[] accounts = data["Accounts"].Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                    string[] folders = data["Folder"].Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                    string formattedAccounts;
+                    int totalAccounts = accounts.Length;
+
+                    for (int i = 0; i < totalAccounts; i++)
+                    {
+                        string folder = i < folders.Length ? folders[i].Trim() : "Uncategorized";
+                        string otpUri = accounts[i].Trim();
+
+                        string label = ExtractLabelFromOTP(otpUri);
+
+                        formattedAccounts = ($"{folder}\\{label};{otpUri}");
+                        await Task.Run(() => accountManager.AddAccount(formattedAccounts));
+
+                        LoadingProgressBar.Progress = (double)(i + 1) / totalAccounts;
+                    }
+
+                    await Task.Delay(7000);
+                    Synchro.IsEnabled = true;
+                    Serv.IsEnabled = true;
+                    Retour.IsEnabled = true;
+                    LoadingProgressBar.IsVisible = false;
+                    await Navigation.PopAsync();
+                }
+                catch (Exception ex)
+                {
+                    Debug.WriteLine("Erreur de parsing JSON: " + ex.Message);
+                }
             }
             else
             {
@@ -211,6 +248,12 @@ public partial class NetworkParameters : ContentPage
         }
     }
     #endregion
+
+    static string ExtractLabelFromOTP(string otpUri)
+    {
+        var match = Regex.Match(otpUri, @"otpauth://totp/([^?]+)");
+        return match.Success ? match.Groups[1].Value : "Unknown";
+    }
 
     private bool IsHostReachable(string ip)
     {
@@ -225,6 +268,30 @@ public partial class NetworkParameters : ContentPage
         catch
         {
             return false;
+        }
+    }
+
+    private async Task<string> SendRequestAsync(string endpoint, string method, string jsonData = null)
+    {
+        using (var client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"http://{IPApplication}:19755/");
+
+            HttpResponseMessage response = null;
+
+            if (method == "GET")
+            {
+                response = await client.GetAsync(endpoint);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                return null;
+            }
         }
     }
 }

@@ -6,11 +6,13 @@ public partial class NewAccount2 : ContentPage
 {
     private string otpauth;
     private Main Menu;
+    private AccountManager accountManager;
     private string fName;
 
-    public NewAccount2(string OtpAuth, Main menu, string folderName)
+    public NewAccount2(string OtpAuth, Main menu, string folderName, AccountManager accountManager)
 	{
 		InitializeComponent();
+        this.accountManager = accountManager; 
         fName = folderName;
         otpauth = OtpAuth;
         Menu = menu;
@@ -23,7 +25,7 @@ public partial class NewAccount2 : ContentPage
             string[] part = otpauth.Split('/');
             otpauth = part[0] + "/" + part[1] + "/" + part[2] + "/" + AccountName.Text + "/" + part[3];
             string line = fName + "\\" + AccountName.Text + ";" + otpauth;
-            AccountManager accountManager = new AccountManager();
+            //AccountManager accountManager = new AccountManager();
             accountManager.AddAccount(line);
 
             await Navigation.PopToRootAsync();
