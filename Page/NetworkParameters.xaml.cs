@@ -16,6 +16,7 @@ public partial class NetworkParameters : ContentPage
     private AccountManager accountManager;
     public ObservableCollection<string> listIPA { get; set; }
     private string IPApplication = Preferences.Get("IPApplication", string.Empty);
+
     public NetworkParameters(Main main, HttpServer server, AccountManager accountManager)
     {
         InitializeComponent();
@@ -39,6 +40,16 @@ public partial class NetworkParameters : ContentPage
         }
     }
 
+    private void RegisterIPA(object sender, EventArgs e)
+    {
+        if (AppIP.SelectedItem != null)
+        {
+            IPApplication = AppIP.SelectedItem.ToString();
+            Preferences.Set("IPApplication", IPApplication);
+        }
+    }
+
+    #region Reseau
     private string GetLocalIPAddress()
     {
         try
@@ -67,31 +78,7 @@ public partial class NetworkParameters : ContentPage
         return "IP introuvable";
     }
 
-    private async void AppNetworkChanged(object sender, EventArgs e)
-    {
-        MainThread.BeginInvokeOnMainThread(() => AppIP.ItemsSource = null);
-        if (!string.IsNullOrEmpty(AppNetwork.Text) && IsValidIPAddress(AppNetwork.Text))
-        {
-            listIPA.Clear();
-            await ScanNetworkAsync(AppNetwork.Text);
-            MainThread.BeginInvokeOnMainThread(() => AppIP.ItemsSource = new List<string>(listIPA));
-        }
-        else
-        {
-            DisplayAlert("Erreur", "Veuillez rentrer un réseau correct exemple: 192.168.1", "OK");
-        }
-    }
 
-    private void RegisterIPA(object sender, EventArgs e)
-    {
-        if (AppIP.SelectedItem != null)
-        {
-            IPApplication = AppIP.SelectedItem.ToString();
-            Preferences.Set("IPApplication", IPApplication);
-        }
-    }
-
-    #region Scan reseau
     private bool IsValidIPAddress(string ipAddress)
     {
         string pattern = @"^(25[0-5]|2[0-4][0-9]|1?[0-9][0-9]?)\."
@@ -111,6 +98,15 @@ public partial class NetworkParameters : ContentPage
         }
 
         await Task.WhenAll(tasks);
+
+        List<string> arpDevices = GetAllConnectedDevices(subnet);
+        foreach (string ip in arpDevices)
+        {
+            if (!listIPA.Contains(ip))
+            {
+                listIPA.Add(ip);
+            }
+        }
     }
 
     private async Task PingHost(string ipAddress)
@@ -150,9 +146,92 @@ public partial class NetworkParameters : ContentPage
             return "Nom d'hôte introuvable";
         }
     }
+
+    private List<string> GetAllConnectedDevices(string subnet)
+    {
+        List<string> devices = new List<string>();
+
+        try
+        {
+            Process p = new Process();
+            p.StartInfo.FileName = "arp";
+            p.StartInfo.Arguments = "-a";
+            p.StartInfo.UseShellExecute = false;
+            p.StartInfo.RedirectStandardOutput = true;
+            p.StartInfo.CreateNoWindow = true;
+            p.Start();
+
+            string output = p.StandardOutput.ReadToEnd();
+            p.WaitForExit();
+
+            string pattern = @"(\d+\.\d+\.\d+\.\d+)\s+([a-fA-F0-9:-]+)";
+            foreach (Match match in Regex.Matches(output, pattern))
+            {
+                string ip = match.Groups[1].Value;
+
+                if (ip.StartsWith(subnet + "."))
+                {
+                    devices.Add(ip);
+                }
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine("Erreur lors de la récupération des appareils via ARP : " + ex.Message);
+        }
+
+        return devices;
+    }
+
+
+    static string ExtractLabelFromOTP(string otpUri)
+    {
+        var match = Regex.Match(otpUri, @"otpauth://totp/([^?]+)");
+        return match.Success ? match.Groups[1].Value.Replace("/", "") : "Unknown";
+    }
+
+    private bool IsHostReachable(string ip)
+    {
+        try
+        {
+            using (var ping = new Ping())
+            {
+                var reply = ping.Send(ip, 1000);
+                return reply.Status == System.Net.NetworkInformation.IPStatus.Success;
+            }
+        }
+        catch
+        {
+            return false;
+        }
+    }
+
+    private async Task<string> SendRequestAsync(string endpoint, string method, string jsonData = null)
+    {
+        using (var client = new HttpClient())
+        {
+            client.BaseAddress = new Uri($"http://{IPApplication}:19755/");
+
+            HttpResponseMessage response = null;
+
+            if (method == "GET")
+            {
+                response = await client.GetAsync(endpoint);
+            }
+
+            if (response.IsSuccessStatusCode)
+            {
+                return await response.Content.ReadAsStringAsync();
+            }
+            else
+            {
+                return null;
+            }
+        }
+    }
     #endregion
 
-    #region Bouton
+    #region Control
     private async void Back(object sender, EventArgs e)
     {
         await Navigation.PopAsync();
@@ -229,7 +308,7 @@ public partial class NetworkParameters : ContentPage
                         LoadingProgressBar.Progress = (double)(i + 1) / totalAccounts;
                     }
 
-                    await Task.Delay(7000);
+                    await Task.Delay(1000);
                     Synchro.IsEnabled = true;
                     Serv.IsEnabled = true;
                     Retour.IsEnabled = true;
@@ -247,51 +326,21 @@ public partial class NetworkParameters : ContentPage
             }
         }
     }
+
+
+    private async void AppNetworkChanged(object sender, EventArgs e)
+    {
+        MainThread.BeginInvokeOnMainThread(() => AppIP.ItemsSource = null);
+        if (!string.IsNullOrEmpty(AppNetwork.Text) && IsValidIPAddress(AppNetwork.Text))
+        {
+            listIPA.Clear();
+            await ScanNetworkAsync(AppNetwork.Text);
+            MainThread.BeginInvokeOnMainThread(() => AppIP.ItemsSource = new List<string>(listIPA));
+        }
+        else
+        {
+            DisplayAlert("Erreur", "Veuillez rentrer un réseau correct exemple: 192.168.1", "OK");
+        }
+    }
     #endregion
-
-    static string ExtractLabelFromOTP(string otpUri)
-    {
-        var match = Regex.Match(otpUri, @"otpauth://totp/([^?]+)");
-        return match.Success ? match.Groups[1].Value : "Unknown";
-    }
-
-    private bool IsHostReachable(string ip)
-    {
-        try
-        {
-            using (var ping = new Ping())
-            {
-                var reply = ping.Send(ip, 1000);
-                return reply.Status == System.Net.NetworkInformation.IPStatus.Success;
-            }
-        }
-        catch
-        {
-            return false;
-        }
-    }
-
-    private async Task<string> SendRequestAsync(string endpoint, string method, string jsonData = null)
-    {
-        using (var client = new HttpClient())
-        {
-            client.BaseAddress = new Uri($"http://{IPApplication}:19755/");
-
-            HttpResponseMessage response = null;
-
-            if (method == "GET")
-            {
-                response = await client.GetAsync(endpoint);
-            }
-
-            if (response.IsSuccessStatusCode)
-            {
-                return await response.Content.ReadAsStringAsync();
-            }
-            else
-            {
-                return null;
-            }
-        }
-    }
 }
