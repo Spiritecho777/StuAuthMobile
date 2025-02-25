@@ -32,29 +32,29 @@ public partial class NewAccount : ContentPage
     {
         scannerView.IsVisible = true;
         QRcapture.IsVisible = false;
-        Import.IsVisible = false;
     }
 
-    private void Import_Click(object sender, EventArgs e)
+    private void Confirm_click(object sender, EventArgs e)
     {
-        //List<string> vide = new List<string>();
-        //main.ImportM(vide, menu, fName);
-    }
-
-    /*private void Confirm(object sender, EventArgs e)
-    {
-        string normalizeText = SecretKey.Text.Normalize(NormalizationForm.FormD);
-        if (SecretKey.Text == normalizeText && SecretKey.Text.All(char.IsLetterOrDigit))
+        if (!string.IsNullOrEmpty(SecretKey.Text))
         {
-            string otpauth = "otpauth://totp/?secret=" + SecretKey.Text + "&digits=6&period=30";
-            main.NewAccount(otpauth, menu, fName);
+            string normalizeText = SecretKey.Text.Normalize(NormalizationForm.FormD);
+            if (SecretKey.Text == normalizeText && SecretKey.Text.All(char.IsLetterOrDigit))
+            {
+                string otpauth = "otpauth://totp/?secret=" + SecretKey.Text + "&digits=6&period=30";
+                main.NewAccount(otpauth, menu, fName, accountManager);
+            }
+            else
+            {
+                DisplayAlert("Erreur", "La clé que vous avez rentrez n'est pas correct", "OK");
+                SecretKey.Text = string.Empty;
+            }
         }
         else
         {
-            System.Windows.MessageBox.Show("La clé que vous avez rentrez n'est pas correct");
-            SecretKey.Clear();
+            DisplayAlert("Erreur", "Veuillez entrez une clé", "OK");
         }
-    }*/
+    }
 
     private async void Back(object sender, EventArgs e)
     {

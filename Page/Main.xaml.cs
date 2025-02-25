@@ -8,6 +8,10 @@ using System.Collections.Generic;
 using Microsoft.VisualBasic;
 using System.Net.NetworkInformation;
 using System.Net;
+using System.Text.Json;
+using Android.Content;
+using Android.Provider;
+using Microsoft.Maui.ApplicationModel;
 
 namespace StuAuthMobile.Page;
 
@@ -296,9 +300,28 @@ public partial class Main : ContentPage
         DisplayAlert("Numéro de version", $"Numero de version actuel : {version}", "OK");
     }
 
-    private void TimeSynchro(object sender, EventArgs e)
+    private async void TimeSynchro(object sender, EventArgs e)
     {
-        // Logique de synchronisation
+        DateTime localTime = DateTime.Now;  // Heure du téléphone
+        DateTime networkTime = await GetNetworkTimeAsync();
+        TimeSpan difference = networkTime - localTime;
+
+        if (Math.Abs(difference.TotalSeconds) > 10)
+        {
+            DisplayAlert("Desynchronisation", "L'heure de votre appareil est incorrecte !", "OK");
+            if (DeviceInfo.Platform == DevicePlatform.Android)
+            {
+                await OpenDateTimeSettings();
+            }
+            else if (DeviceInfo.Platform == DevicePlatform.iOS)
+            {
+                await Launcher.OpenAsync("App-Prefs:");
+            }
+        }
+        else
+        {
+            DisplayAlert("Synchronisation", "L'heure est bien synchroniser", "OK");
+        }
     }
 
     private void Back_Click(object sender, EventArgs e)
@@ -309,6 +332,39 @@ public partial class Main : ContentPage
     #endregion  
 
     #region Méthode
+    public async Task<DateTime> GetNetworkTimeAsync()
+    {
+        try
+        {
+            using HttpClient client = new HttpClient();
+            string response = await client.GetStringAsync("http://worldtimeapi.org/api/timezone/Etc/UTC");
+            var json = JsonSerializer.Deserialize<Dictionary<string, object>>(response);
 
+            if (json != null && json.ContainsKey("utc_datetime"))
+            {
+                return DateTime.Parse(json["utc_datetime"].ToString());
+            }
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Erreur de récupération de l'heure NTP: {ex.Message}");
+        }
+
+        return DateTime.UtcNow; // Fallback si erreur
+    }
+
+    public async Task OpenDateTimeSettings()
+    {
+        try
+        {
+            var intent = new Intent(Settings.ActionDateSettings);
+            intent.SetFlags(ActivityFlags.NewTask);
+            Platform.CurrentActivity.StartActivity(intent);
+        }
+        catch (Exception ex)
+        {
+            Debug.WriteLine($"Erreur lors de l'ouverture des paramètres : {ex.Message}");
+        }
+    }
     #endregion
 }

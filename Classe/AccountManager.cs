@@ -46,7 +46,6 @@ namespace StuAuthMobile.Classe
             encryptionManager.EncryptionToFile(filePath, filePathE);
         }
 
-
         #region Traitements de données
         public bool FileExists()
         {
