@@ -42,7 +42,7 @@
         <Button x:Name="back" Text="Retour" Grid.Row="0" Grid.Column="0" HorizontalOptions="Start" WidthRequest="80" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
 
         <Label x:Name="AccountName" TextColor="Black" Grid.Row="1" Grid.Column="0" HorizontalOptions="Start" Margin="0,40" FontSize="20" HeightRequest="45" VerticalOptions="Center" WidthRequest="280"/>
-        <Label x:Name="MDP" FontSize="50" TextColor="Black" Grid.Row="2" Grid.ColumnSpan="2" HeightRequest="80" VerticalOptions="CenterAndExpand" WidthRequest="170"/>
+        <Label x:Name="MDP" FontSize="50" TextColor="Black" Grid.Row="2" Grid.ColumnSpan="2" HeightRequest="80" VerticalOptions="CenterAndExpand" WidthRequest="200"/>
         <Label x:Name="TempsRestant" TextColor="Black" Grid.Row="3" Grid.ColumnSpan="2" HorizontalOptions="Center" FontSize="20" HeightRequest="45" VerticalOptions="Center" WidthRequest="35"/>
     </Grid>
 </ContentPage>

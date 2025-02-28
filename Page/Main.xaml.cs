@@ -9,9 +9,12 @@ using Microsoft.VisualBasic;
 using System.Net.NetworkInformation;
 using System.Net;
 using System.Text.Json;
+using Microsoft.Maui.ApplicationModel;
+
+#if ANDROID
 using Android.Content;
 using Android.Provider;
-using Microsoft.Maui.ApplicationModel;
+#endif
 
 namespace StuAuthMobile.Page;
 
@@ -309,14 +312,11 @@ public partial class Main : ContentPage
         if (Math.Abs(difference.TotalSeconds) > 10)
         {
             DisplayAlert("Desynchronisation", "L'heure de votre appareil est incorrecte !", "OK");
-            if (DeviceInfo.Platform == DevicePlatform.Android)
-            {
-                await OpenDateTimeSettings();
-            }
-            else if (DeviceInfo.Platform == DevicePlatform.iOS)
-            {
-                await Launcher.OpenAsync("App-Prefs:");
-            }
+#if ANDROID
+            await OpenDateTimeSettings();
+#elif IOS || MACCATALYST
+            await Launcher.OpenAsync("App-Prefs:");
+#endif
         }
         else
         {
@@ -329,7 +329,7 @@ public partial class Main : ContentPage
         UpdateFolderList();
     }
 
-    #endregion  
+#endregion
 
     #region Méthode
     public async Task<DateTime> GetNetworkTimeAsync()
@@ -357,9 +357,11 @@ public partial class Main : ContentPage
     {
         try
         {
+#if ANDROID
             var intent = new Intent(Settings.ActionDateSettings);
             intent.SetFlags(ActivityFlags.NewTask);
             Platform.CurrentActivity.StartActivity(intent);
+#endif
         }
         catch (Exception ex)
         {
