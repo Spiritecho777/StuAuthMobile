@@ -3,6 +3,8 @@ using Microsoft.Maui.LifecycleEvents;
 using System.Diagnostics;
 using ZXing.Net.Maui;
 using ZXing.Net.Maui.Controls;
+using StuAuthMobile.Classe;
+
 
 #if ANDROID
 using Android.Hardware;
@@ -33,6 +35,8 @@ namespace StuAuthMobile
                     events.AddAndroid(android => android.OnStop(activity =>
                     {
                         App.CleanupBeforeExit();
+
+                        if (!HttpServer.isStart) { Android.OS.Process.KillProcess(Android.OS.Process.MyPid()); }                        
                     }));
 
 #elif IOS || MACCATALYST

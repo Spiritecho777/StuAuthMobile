@@ -20,6 +20,7 @@ namespace StuAuthMobile.Classe
         private Thread listenerThread;
         private Main mainPage;
         private CancellationTokenSource cancellationTokenSource;
+        public static bool isStart = false;
 
         public HttpServer(Main mainPage)
         {
@@ -30,6 +31,7 @@ namespace StuAuthMobile.Classe
         {
             listener = new HttpListener();
             listener.Prefixes.Add($"http://{IP}:19755/");
+            isStart = true;
             cancellationTokenSource = new CancellationTokenSource();
             listenerThread = new Thread(() => StartListening(cancellationTokenSource.Token));
             listenerThread.IsBackground = true;
@@ -152,6 +154,7 @@ namespace StuAuthMobile.Classe
 
         public void Stop()
         {
+            isStart = false;
             cancellationTokenSource.Cancel();
             listener.Stop();
             listenerThread.Join();

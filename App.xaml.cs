@@ -3,6 +3,8 @@ using System.IO;
 using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
 using System.Diagnostics;
+using StuAuthMobile.Page;
+using StuAuthMobile.Classe;
 
 namespace StuAuthMobile
 {
@@ -22,6 +24,13 @@ namespace StuAuthMobile
 
         public static void CleanupBeforeExit()
         {
+            Debug.WriteLine($"etat du bool: {HttpServer.isStart}");
+            if (HttpServer.isStart)
+            {
+                Debug.WriteLine("l'application ne se ferme pas");
+                return;
+            }
+
             try
             {
                 string appDirectory = System.IO.Path.Combine(Environment.GetFolderPath(Environment.SpecialFolder.ApplicationData), "StuAuthData");

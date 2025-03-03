@@ -39,7 +39,7 @@
 		<PackageIcon></PackageIcon>
 		<WindowsPackageType>None</WindowsPackageType>
 		<Company>Stusoft</Company>
-		<Authors>Asumi</Authors>
+		<Authors>Spirit</Authors>
 		<PublishAot>False</PublishAot>
 		<PublishTrimmed>False</PublishTrimmed>
 	</PropertyGroup>
@@ -47,26 +47,32 @@
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-android|AnyCPU'">
 	  <Optimize>True</Optimize>
 	  <RunAOTCompilation>False</RunAOTCompilation>
+	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-ios|AnyCPU'">
 	  <Optimize>True</Optimize>
+	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Release|net8.0-maccatalyst|AnyCPU'">
 	  <Optimize>True</Optimize>
+	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-android|AnyCPU'">
 	  <Optimize>True</Optimize>
+	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-ios|AnyCPU'">
 	  <Optimize>True</Optimize>
+	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<PropertyGroup Condition="'$(Configuration)|$(TargetFramework)|$(Platform)'=='Debug|net8.0-maccatalyst|AnyCPU'">
 	  <Optimize>True</Optimize>
+	  <ApplicationDisplayVersion>1.0.1</ApplicationDisplayVersion>
 	</PropertyGroup>
 
 	<ItemGroup>

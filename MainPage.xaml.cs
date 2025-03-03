@@ -15,7 +15,7 @@ namespace StuAuthMobile
 
         protected override async void OnAppearing()
         {
-            //base.OnAppearing();
+            base.OnAppearing();
             await Navigation.PushAsync(new Main(this));
         }
 
