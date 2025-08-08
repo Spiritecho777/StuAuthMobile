@@ -213,7 +213,7 @@ public partial class Main : ContentPage
         }
     }
 
-    private void Del_Click(object sender, EventArgs e)
+    private async void Del_Click(object sender, EventArgs e)
     {
         string folder = FolderName.Text?.ToString();
         if (selectedItem == null)
@@ -236,10 +236,31 @@ public partial class Main : ContentPage
             }
             else
             {
-                if (accountManager.DeleteFolderOrAccount(name, isFolder: true))
+                bool deleted = accountManager.DeleteFolderOrAccount(name, isFolder: true, force: false);
+
+                if (!deleted)
+                {
+                    bool confirm = await DisplayAlert("Confirmation de suppression",$"Le dossier '{name}' contient des comptes. Voulez-vous le supprimer ainsi que tous ses comptes ?",
+                        "Oui",
+                        "Non"
+                    );
+
+                    if (confirm)
+                    {
+                        if (accountManager.DeleteFolderOrAccount(name, isFolder: true, force: true))
+                        {
+                            DisplayAlert("Info",$"Le dossier '{name}' et tous ses comptes ont été supprimés.","OK");
+                        }
+                    }
+                }
+                else
                 {
                     DisplayAlert("Info",$"Le dossier '{name}' a été supprimé avec succès.","OK");
                 }
+                /*if (accountManager.DeleteFolderOrAccount(name, isFolder: true))
+                {
+                    DisplayAlert("Info",$"Le dossier '{name}' a été supprimé avec succès.","OK");
+                }*/
             }
 
             UpdateFolderList();

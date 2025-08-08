@@ -78,7 +78,6 @@ public partial class NetworkParameters : ContentPage
         return "IP introuvable";
     }
 
-
     private bool IsValidIPAddress(string ipAddress)
     {
         string pattern = @"^(25[0-5]|2[0-4][0-9]|1?[0-9][0-9]?)\."
@@ -183,7 +182,6 @@ public partial class NetworkParameters : ContentPage
         return devices;
     }
 
-
     static string ExtractLabelFromOTP(string otpUri)
     {
         var match = Regex.Match(otpUri, @"otpauth://totp/([^?]+)");
@@ -210,21 +208,39 @@ public partial class NetworkParameters : ContentPage
     {
         using (var client = new HttpClient())
         {
-            client.BaseAddress = new Uri($"http://{IPApplication}:19755/");
-
-            HttpResponseMessage response = null;
-
-            if (method == "GET")
+            try
             {
-                response = await client.GetAsync(endpoint);
+                client.BaseAddress = new Uri($"http://{IPApplication}:19755/");
+
+                HttpResponseMessage response = null;
+
+                if (method == "GET")
+                {
+                    response = await client.GetAsync(endpoint);
+                }
+
+                if (response.IsSuccessStatusCode)
+                {
+                    return await response.Content.ReadAsStringAsync();
+                }
+                else
+                {
+                    return null;
+                }
             }
-
-            if (response.IsSuccessStatusCode)
+            catch (HttpRequestException ex)
             {
-                return await response.Content.ReadAsStringAsync();
+                await DisplayAlert("Erreur", "Le serveur n'est pas démarrer", "OK");
+                return null;
             }
-            else
+            catch (TaskCanceledException ex)
             {
+                await DisplayAlert("Erreur", $"Requête expirée : {ex.Message}", "OK");
+                return null;
+            }
+            catch (Exception ex)
+            {
+                await DisplayAlert("Erreur", $"Erreur inattendue : {ex.Message}", "OK");
                 return null;
             }
         }
@@ -261,10 +277,10 @@ public partial class NetworkParameters : ContentPage
     private async void Sync(object sender, EventArgs e)
     {
         string answer = await DisplayActionSheet(
-            "Synchronisation",
-            "Annuler",
-            null,
-            "Importer"
+        "Synchronisation",
+        "Annuler",
+        null,
+        "Importer"
         );
 
         if (answer == "Importer")
@@ -272,59 +288,68 @@ public partial class NetworkParameters : ContentPage
             if (!string.IsNullOrWhiteSpace(IPApplication) && IsHostReachable(IPApplication))
             {
                 string response = await SendRequestAsync("/", "GET");
-
-                try
+                if (response != null)
                 {
-                    Retour.IsEnabled = false;
-                    Serv.IsEnabled = false;
-                    Synchro.IsEnabled = false;
-                    LoadingProgressBar.IsVisible = true;
-                    LoadingProgressBar.Progress = 0;
-
-                    var data = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
-
-                    if (data == null || !data.ContainsKey("Accounts") || !data.ContainsKey("Folder"))
+                    try
                     {
-                        Console.WriteLine(" Erreur: Données manquantes.");
-                        return;
+                        Retour.IsEnabled = false;
+                        Serv.IsEnabled = false;
+                        Synchro.IsEnabled = false;
+                        LoadingProgressBar.IsVisible = true;
+                        LoadingProgressBar.Progress = 0;
+
+                        var data = JsonSerializer.Deserialize<Dictionary<string, string>>(response);
+
+                        if (data == null || !data.ContainsKey("Accounts") || !data.ContainsKey("Folder"))
+                        {
+                            Console.WriteLine(" Erreur: Données manquantes.");
+                            return;
+                        }
+
+                        string[] accounts = data["Accounts"].Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+                        string[] folders = data["Folder"].Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
+
+                        string formattedAccounts;
+                        int totalAccounts = accounts.Length;
+
+                        List<string> comptesExistants = accountManager.GetAllOtpUri();
+
+                        for (int i = 0; i < totalAccounts; i++)
+                        {
+                            string folder = i < folders.Length ? folders[i].Trim() : "Uncategorized";
+                            string otpUri = accounts[i].Trim();
+
+                            bool alreadyExists = comptesExistants.Any(ligne => otpUri.Contains(ligne));
+
+                            if (!alreadyExists)
+                            {
+                                string label = ExtractLabelFromOTP(otpUri);
+
+                                formattedAccounts = ($"{folder}\\{label};{otpUri}");
+                                await Task.Run(() => accountManager.AddAccount(formattedAccounts));
+
+                                LoadingProgressBar.Progress = (double)(i + 1) / totalAccounts;
+                            }
+                        }
+
+                        await Task.Delay(1000);
+                        Synchro.IsEnabled = true;
+                        Serv.IsEnabled = true;
+                        Retour.IsEnabled = true;
+                        LoadingProgressBar.IsVisible = false;
+                        await Navigation.PopAsync();
                     }
-
-                    string[] accounts = data["Accounts"].Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-                    string[] folders = data["Folder"].Split(new[] { '\n', '\r' }, StringSplitOptions.RemoveEmptyEntries);
-
-                    string formattedAccounts;
-                    int totalAccounts = accounts.Length;
-
-                    for (int i = 0; i < totalAccounts; i++)
+                    catch (Exception ex)
                     {
-                        string folder = i < folders.Length ? folders[i].Trim() : "Uncategorized";
-                        string otpUri = accounts[i].Trim();
-
-                        string label = ExtractLabelFromOTP(otpUri);
-
-                        formattedAccounts = ($"{folder}\\{label};{otpUri}");
-                        await Task.Run(() => accountManager.AddAccount(formattedAccounts));
-
-                        LoadingProgressBar.Progress = (double)(i + 1) / totalAccounts;
+                        Debug.WriteLine("Erreur de parsing JSON: " + ex.Message);
                     }
-
-                    await Task.Delay(1000);
-                    Synchro.IsEnabled = true;
-                    Serv.IsEnabled = true;
-                    Retour.IsEnabled = true;
-                    LoadingProgressBar.IsVisible = false;
-                    await Navigation.PopAsync();
-                }
-                catch (Exception ex)
-                {
-                    Debug.WriteLine("Erreur de parsing JSON: " + ex.Message);
                 }
             }
             else
             {
                 await DisplayAlert("Erreur", "L'adresse IP n'est pas valide ou inaccessible.", "OK");
             }
-        }
+        }      
     }
 
 
