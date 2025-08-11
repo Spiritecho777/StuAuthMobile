@@ -32,13 +32,19 @@ namespace StuAuthMobile.Classe
             }
             else
             {
+                if (string.IsNullOrWhiteSpace(Preferences.Get("KeyPass", string.Empty)))
+                {
+                    Preferences.Set("KeyPass", Guid.NewGuid().ToString());
+                }
                 CreateFile();
+                Chiffrement();
             }
         }
 
         private void CreateFile()
         {
             File.WriteAllText(filePathE, string.Empty);
+            File.WriteAllText(filePath, string.Empty);
         }
 
         private void Chiffrement()

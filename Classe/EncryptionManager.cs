@@ -51,40 +51,62 @@ namespace StuAuthMobile.Classe
 
         public void DecryptFromFile(string inputFilePath, string outputFilePath)
         {
-            using (FileStream fileStream = new FileStream(inputFilePath, FileMode.Open))
+            try
             {
-                using (Aes aes = Aes.Create())
+                Debug.WriteLine(Password);
+                using (FileStream fileStream = new FileStream(inputFilePath, FileMode.Open))
                 {
-                    // Lire le sel (IV) depuis le fichier
-                    byte[] salt = new byte[aes.BlockSize / 8];
-                    int bytesRead = fileStream.Read(salt, 0, salt.Length);
-                    if (bytesRead != salt.Length)
+                    using (Aes aes = Aes.Create())
                     {
-                        throw new CryptographicException("Impossible de lire le sel (IV) du fichier.");
-                    }
-
-                    aes.Key = DeriveKey(Password, salt);
-                    aes.IV = salt;
-
-                    // Déchiffrer les données restantes
-                    using (CryptoStream cryptoStream = new CryptoStream(fileStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
-                    using (StreamReader reader = new StreamReader(cryptoStream))
-                    {
-                        string decryptedData = reader.ReadToEnd();
-
-                        // Supprimer le point-virgule (;) s'il est au début de la chaîne déchiffrée
-                        if (decryptedData.StartsWith(";"))
+                        // Lire le sel (IV) depuis le fichier
+                        byte[] salt = new byte[aes.BlockSize / 8];
+                        int bytesRead = fileStream.Read(salt, 0, salt.Length);
+                        if (bytesRead != salt.Length)
                         {
-                            decryptedData = decryptedData.Substring(1);
+                            throw new CryptographicException("Impossible de lire le sel (IV) du fichier.");
                         }
 
-                        // Ajouter les données déchiffrées au fichier
-                        using (StreamWriter writer = new StreamWriter(outputFilePath, false)) // false pour écraser, pas append
+                        aes.Key = DeriveKey(Password, salt);
+                        aes.IV = salt;
+
+                        // Déchiffrer les données restantes
+                        using (CryptoStream cryptoStream = new CryptoStream(fileStream, aes.CreateDecryptor(), CryptoStreamMode.Read))
+                        using (StreamReader reader = new StreamReader(cryptoStream))
                         {
-                            writer.WriteLine(decryptedData); // Écrit le contenu déchiffré sans le ';'
+                            string decryptedData = reader.ReadToEnd();
+
+                            // Supprimer le point-virgule (;) s'il est au début de la chaîne déchiffrée
+                            if (decryptedData.StartsWith(";"))
+                            {
+                                decryptedData = decryptedData.Substring(1);
+                            }
+
+                            // Ajouter les données déchiffrées au fichier
+                            using (StreamWriter writer = new StreamWriter(outputFilePath, false)) // false pour écraser, pas append
+                            {
+                                writer.WriteLine(decryptedData); // Écrit le contenu déchiffré sans le ';'
+                            }
                         }
                     }
                 }
+            }
+            catch (CryptographicException ex)
+            {
+                Device.BeginInvokeOnMainThread(async () =>
+                {
+                    await Application.Current.MainPage.DisplayAlert(
+                        "Erreur de décryption",
+                        "Le fichier de données n'est pas lisible sur cette machine.\n" +
+                        "Il peut être corrompu ou la clé est incorrecte.\n\n" +
+                        "L'application va maintenant se fermer.",
+                        "OK");
+
+                    Debug.WriteLine("Erreur de décryption : " + ex.Message);
+
+                    // Fermer l'application (selon la plateforme)
+                    System.Diagnostics.Process.GetCurrentProcess().CloseMainWindow();
+                    System.Diagnostics.Process.GetCurrentProcess().Kill();
+                });
             }
         }
 
