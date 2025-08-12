@@ -117,136 +117,130 @@
   <resheader name="writer">
     <value>System.Resources.ResXResourceWriter, System.Windows.Forms, Version=4.0.0.0, Culture=neutral, PublicKeyToken=b77a5c561934e089</value>
   </resheader>
-  <data name="IPApplication" xml:space="preserve">
-    <value>null</value>
-  </data>
-  <data name="KeyPass" xml:space="preserve">
-    <value>null</value>
-  </data>
   <data name="Back" xml:space="preserve">
-    <value>Back</value>
+    <value>Retour</value>
   </data>
   <data name="Cancel" xml:space="preserve">
-    <value>Cancel</value>
+    <value>Annuler</value>
   </data>
   <data name="Confirm" xml:space="preserve">
-    <value>Confirm</value>
+    <value>Confirmer</value>
   </data>
   <data name="ErrorExport" xml:space="preserve">
-    <value>There is an empty folder, please delete it before exporting.</value>
+    <value>Il y a un dossier vide veuillez le supprimer avant l'export</value>
   </data>
   <data name="ErrorExportQR" xml:space="preserve">
-    <value>The directory {0} could not be created.</value>
+    <value>Le répertoire {0} n'a pas pu être créé.</value>
   </data>
   <data name="Export" xml:space="preserve">
     <value>Export</value>
   </data>
   <data name="ExportQR" xml:space="preserve">
-    <value>Save QR codes</value>
+    <value>Enregistrer les QR codes</value>
   </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
   </data>
   <data name="IntAdd" xml:space="preserve">
-    <value>Enter the folder name</value>
+    <value>Entrez le nom du dossier</value>
   </data>
   <data name="IntAppVersion" xml:space="preserve">
-    <value>Current version number: </value>
+    <value>Numéro de version actuel : </value>
   </data>
   <data name="IntDeleteAccount" xml:space="preserve">
-    <value>Account {0} has been successfully deleted.</value>
+    <value>Le compte {0} a été supprimé avec succès.</value>
   </data>
   <data name="IntDeleteFolder1" xml:space="preserve">
-    <value>The folder {0} contains accounts. Do you want to delete it and all its accounts?</value>
+    <value>Le dossier {0} contient des comptes. Voulez-vous le supprimer ainsi que tous ses comptes ?</value>
   </data>
   <data name="IntDeleteFolder2" xml:space="preserve">
-    <value>Deletion confirmation</value>
+    <value>Confirmation de suppression</value>
   </data>
   <data name="IntDeleteFolder3" xml:space="preserve">
-    <value>The folder {0} and all its accounts have been deleted.</value>
+    <value>Le dossier {0} et tous ses comptes ont été supprimés.</value>
   </data>
   <data name="IntDeleteFolder4" xml:space="preserve">
-    <value>The folder {0} has been successfully deleted.</value>
+    <value>Le dossier {0} a été supprimé avec succès.</value>
   </data>
   <data name="IntExport1" xml:space="preserve">
-    <value>Export to text file</value>
+    <value>Exporter vers fichier texte</value>
   </data>
   <data name="IntExport2" xml:space="preserve">
-    <value>Export to QRCode file</value>
+    <value>Exporter vers fichier QRCode</value>
   </data>
   <data name="Txt1" xml:space="preserve">
-    <value>Text files (*.txt)|*.txt</value>
+    <value>Fichiers texte (*.txt)|*.txt</value>
   </data>
   <data name="Txt2" xml:space="preserve">
-    <value>Select a text file</value>
+    <value>Sélectionnez un fichier texte</value>
   </data>
   <data name="ErrorIntImport" xml:space="preserve">
-    <value>There is an error in your export file, please check and try again.</value>
+    <value>Il y a une erreur dans votre fichier d'export veuillez vérifier et recommencer</value>
   </data>
   <data name="IntRename" xml:space="preserve">
-    <value>Enter the new name</value>
+    <value>Entrez le nouveau nom</value>
   </data>
   <data name="QRCode" xml:space="preserve">
     <value>QRCode</value>
   </data>
   <data name="Register" xml:space="preserve">
-    <value>Register</value>
+    <value>Enregistrer</value>
   </data>
   <data name="Rename" xml:space="preserve">
-    <value>Rename</value>
+    <value>Renommée</value>
   </data>
   <data name="Secret Key" xml:space="preserve">
-    <value>Secret Key [A-Za-z0-9]:</value>
+    <value>Clé Secrète [A-Za-z0-9]:</value>
   </data>
   <data name="Server" xml:space="preserve">
-    <value>Server</value>
+    <value>Serveur</value>
   </data>
   <data name="Synchronization" xml:space="preserve">
-    <value>Synchronization</value>
+    <value>Synchronisation</value>
   </data>
   <data name="TTDelete" xml:space="preserve">
-    <value>Right click on the account you want to delete</value>
+    <value>Clique droit sur le compte que vous souhaitez supprimer</value>
   </data>
   <data name="TTHorloge" xml:space="preserve">
-    <value>Clock synchronization</value>
+    <value>Synchronisation de l'horloge</value>
   </data>
   <data name="TTRename" xml:space="preserve">
-    <value>Right click on the account you want to rename</value>
+    <value>Clique droit sur le compte que vous souhaitez renommer</value>
   </data>
   <data name="TTServer" xml:space="preserve">
-    <value>Connection for web extension and import/export</value>
+    <value>Connection pour l'extension web et import/export</value>
   </data>
   <data name="IntNewAccount1" xml:space="preserve">
-    <value>No QR code found</value>
+    <value>Pas de QR code trouver</value>
   </data>
   <data name="IntNewAccount2" xml:space="preserve">
-    <value>The key you entered is not correct.</value>
+    <value>La clé que vous avez rentrez n'est pas correct</value>
   </data>
   <data name="IntNewAccountP2" xml:space="preserve">
-    <value>Please enter an account name</value>
+    <value>Veuillez entrez un nom de compte</value>
   </data>
   <data name="Error" xml:space="preserve">
-    <value>Error</value>
+    <value>Erreur</value>
   </data>
   <data name="IntNP1" xml:space="preserve">
-    <value>Do you want to import the data?</value>
+    <value>Voulez-vous importer les données ?</value>
   </data>
   <data name="IntNP2" xml:space="preserve">
-    <value>The IP address is invalid or unreachable.</value>
+    <value>L'adresse IP n'est pas valide ou inaccessible.</value>
   </data>
   <data name="IntNP3" xml:space="preserve">
-    <value>Please enter a correct network example: 192.168.1</value>
+    <value>Veuillez rentrer un réseau correct exemple: 192.168.1</value>
   </data>
   <data name="IntNP4" xml:space="preserve">
-    <value>The server is not started.</value>
+    <value>Le serveur n'est pas démarrer.</value>
   </data>
   <data name="App1" xml:space="preserve">
-    <value>The application is already running.</value>
+    <value>L'application est déjà en cours d'exécution.</value>
   </data>
   <data name="Encryption1" xml:space="preserve">
-    <value>Error: The data file is not readable on this machine. It may be corrupted or the key is incorrect. The application will now close.</value>
+    <value>Erreur : Le fichier de données n'est pas lisible sur cette machine. Il peut être corrompu ou la clé est incorrecte. L'application va maintenant se fermer.</value>
   </data>
   <data name="Encryption2" xml:space="preserve">
-    <value>Decryption error</value>
+    <value>Erreur de décryption</value>
   </data>
 </root>
