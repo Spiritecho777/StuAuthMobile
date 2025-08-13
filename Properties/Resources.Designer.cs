@@ -124,20 +124,20 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à There is an empty folder, please delete it before exporting..
+        ///   Recherche une chaîne localisée semblable à The folder name cannot be empty..
         /// </summary>
-        internal static string ErrorExport {
+        internal static string ErrorIntAdd {
             get {
-                return ResourceManager.GetString("ErrorExport", resourceCulture);
+                return ResourceManager.GetString("ErrorIntAdd", resourceCulture);
             }
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à The directory {0} could not be created..
+        ///   Recherche une chaîne localisée semblable à No account selected..
         /// </summary>
-        internal static string ErrorExportQR {
+        internal static string ErrorIntDelete {
             get {
-                return ResourceManager.GetString("ErrorExportQR", resourceCulture);
+                return ResourceManager.GetString("ErrorIntDelete", resourceCulture);
             }
         }
         
@@ -151,20 +151,11 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Export.
+        ///   Recherche une chaîne localisée semblable à No account selected..
         /// </summary>
-        internal static string Export {
+        internal static string ErrorIntRename {
             get {
-                return ResourceManager.GetString("Export", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Save QR codes.
-        /// </summary>
-        internal static string ExportQR {
-            get {
-                return ResourceManager.GetString("ExportQR", resourceCulture);
+                return ResourceManager.GetString("ErrorIntRename", resourceCulture);
             }
         }
         
@@ -187,7 +178,16 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Current version number: .
+        ///   Recherche une chaîne localisée semblable à Add Folder.
+        /// </summary>
+        internal static string IntAdd2 {
+            get {
+                return ResourceManager.GetString("IntAdd2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Current version number: {0}.
         /// </summary>
         internal static string IntAppVersion {
             get {
@@ -241,20 +241,11 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Export to text file.
+        ///   Recherche une chaîne localisée semblable à Please enter a key.
         /// </summary>
-        internal static string IntExport1 {
+        internal static string IntNewAccount {
             get {
-                return ResourceManager.GetString("IntExport1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Export to QRCode file.
-        /// </summary>
-        internal static string IntExport2 {
-            get {
-                return ResourceManager.GetString("IntExport2", resourceCulture);
+                return ResourceManager.GetString("IntNewAccount", resourceCulture);
             }
         }
         
@@ -322,6 +313,15 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Import.
+        /// </summary>
+        internal static string IntNP5 {
+            get {
+                return ResourceManager.GetString("IntNP5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Enter the new name.
         /// </summary>
         internal static string IntRename {
@@ -345,6 +345,42 @@ namespace StuAuthMobile.Properties {
         internal static string KeyPass {
             get {
                 return ResourceManager.GetString("KeyPass", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à en.
+        /// </summary>
+        internal static string LangCode {
+            get {
+                return ResourceManager.GetString("LangCode", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à No.
+        /// </summary>
+        internal static string No {
+            get {
+                return ResourceManager.GetString("No", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enter the network to scan.
+        /// </summary>
+        internal static string NP1 {
+            get {
+                return ResourceManager.GetString("NP1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Select an IP address.
+        /// </summary>
+        internal static string NP2 {
+            get {
+                return ResourceManager.GetString("NP2", resourceCulture);
             }
         }
         
@@ -378,9 +414,18 @@ namespace StuAuthMobile.Properties {
         /// <summary>
         ///   Recherche une chaîne localisée semblable à Secret Key [A-Za-z0-9]:.
         /// </summary>
-        internal static string Secret_Key {
+        internal static string SecretKey {
             get {
-                return ResourceManager.GetString("Secret Key", resourceCulture);
+                return ResourceManager.GetString("SecretKey", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Enter the secret key.
+        /// </summary>
+        internal static string SecretKey2 {
+            get {
+                return ResourceManager.GetString("SecretKey2", resourceCulture);
             }
         }
         
@@ -394,6 +439,33 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à Desynchronization.
+        /// </summary>
+        internal static string Sync1 {
+            get {
+                return ResourceManager.GetString("Sync1", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The time on your device is incorrect!.
+        /// </summary>
+        internal static string Sync2 {
+            get {
+                return ResourceManager.GetString("Sync2", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à The time is well synchronized.
+        /// </summary>
+        internal static string Sync3 {
+            get {
+                return ResourceManager.GetString("Sync3", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Synchronization.
         /// </summary>
         internal static string Synchronization {
@@ -403,56 +475,11 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
-        ///   Recherche une chaîne localisée semblable à Right click on the account you want to delete.
+        ///   Recherche une chaîne localisée semblable à Yes.
         /// </summary>
-        internal static string TTDelete {
+        internal static string Yes {
             get {
-                return ResourceManager.GetString("TTDelete", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Clock synchronization.
-        /// </summary>
-        internal static string TTHorloge {
-            get {
-                return ResourceManager.GetString("TTHorloge", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Right click on the account you want to rename.
-        /// </summary>
-        internal static string TTRename {
-            get {
-                return ResourceManager.GetString("TTRename", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Connection for web extension and import/export.
-        /// </summary>
-        internal static string TTServer {
-            get {
-                return ResourceManager.GetString("TTServer", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Text files (*.txt)|*.txt.
-        /// </summary>
-        internal static string Txt1 {
-            get {
-                return ResourceManager.GetString("Txt1", resourceCulture);
-            }
-        }
-        
-        /// <summary>
-        ///   Recherche une chaîne localisée semblable à Select a text file.
-        /// </summary>
-        internal static string Txt2 {
-            get {
-                return ResourceManager.GetString("Txt2", resourceCulture);
+                return ResourceManager.GetString("Yes", resourceCulture);
             }
         }
     }

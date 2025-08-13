@@ -36,15 +36,15 @@
         </Grid.ColumnDefinitions>
         
         <!-- Boutons -->
-        <Button x:Name="Retour" Grid.Row="0" Grid.Column="0" Text="Retour" Margin="5" WidthRequest="80" Clicked="Back" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="Retour" Grid.Row="0" Grid.Column="0" Text="{Binding Source={StaticResource Loc}, Path=[Back]}" Margin="5" WidthRequest="80" Clicked="Back" Style="{StaticResource ChargedButton}"/>
 
         <!-- Labels et TextBox -->
-        <Label Text="Clé Secrète [A-Za-z0-9]:" Grid.Row="1" FontSize="20" Grid.ColumnSpan="3" HorizontalOptions="CenterAndExpand" Margin="5"/>
-        <Entry x:Name="SecretKey" Placeholder="Entrer la clé secrète" PlaceholderColor="DimGrey" Grid.Row="2" Grid.ColumnSpan="3" HorizontalTextAlignment="Center" VerticalOptions="Start" Margin="5"/>
+        <Label Text="{Binding Source={StaticResource Loc}, Path=[SecretKey]}" Grid.Row="1" FontSize="20" Grid.ColumnSpan="3" HorizontalOptions="CenterAndExpand" Margin="5"/>
+        <Entry x:Name="SecretKey" Placeholder="{Binding Source={StaticResource Loc}, Path=[SecretKey2]}" PlaceholderColor="DimGrey" Grid.Row="2" Grid.ColumnSpan="3" HorizontalTextAlignment="Center" VerticalOptions="Start" Margin="5"/>
 
         <!-- Boutons pour QRcode et Confirmer -->
-        <Button x:Name="QRcapture" Grid.Row="0" Grid.Column="2" Text="QRcode" Margin="5" WidthRequest="80" Clicked="Capture" Style="{StaticResource ChargedButton}"/>
-        <Button x:Name="Confirm" Grid.Row="3" Grid.Column="1" Text="Confirmer" FontSize="10" WidthRequest="80" Margin="5" Clicked="Confirm_click" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="QRcapture" Grid.Row="0" Grid.Column="2" Text="{Binding Source={StaticResource Loc}, Path=[QRCode]}" Margin="5" WidthRequest="80" Clicked="Capture" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="Confirm" Grid.Row="3" Grid.Column="1" Text="{Binding Source={StaticResource Loc}, Path=[Confirm]}" FontSize="10" WidthRequest="80" Margin="5" Clicked="Confirm_click" Style="{StaticResource ChargedButton}"/>
 
         <zxingc:CameraBarcodeReaderView x:Name="scannerView" Grid.Row="1" Margin="0,95" Grid.ColumnSpan="3" IsVisible="Hidden" BarcodesDetected="OnBarcodeDetected" IsDetecting="True" IsTorchOn="False" VerticalOptions="FillAndExpand"/>
     </Grid>

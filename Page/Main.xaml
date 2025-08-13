@@ -37,25 +37,33 @@
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
             <ColumnDefinition Width="*"/>
+            <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
         <!-- Ligne 1 -->
-        <Button x:Name="Rename" Text="Renommée" TextColor="Black" WidthRequest="80" FontSize="10" Margin="15,5,0,0" Grid.Row="0" Grid.Column="0" Style="{StaticResource ChargedButton}" Clicked="Rename_Click"/>
-        <Button x:Name="Add" Text="+" WidthRequest="50" TextColor="Black" Grid.Row="0" Margin="30,5,0,0" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="Add_Click"/>
-        <Button x:Name="Del" Text="-" WidthRequest="50" TextColor="Black" Grid.Row="0" Grid.Column="2" Margin="15,5,0,0" Style="{StaticResource ChargedButton}" Clicked="Del_Click"/>
-        <Button x:Name="Help" Text="?" WidthRequest="50" TextColor="Black" Grid.Row="0" Grid.Column="3" Margin="0,5,0,0" Style="{StaticResource ChargedButton}" Clicked="Help_Click"/>
-
+        <Button x:Name="Rename" Text="{Binding Source={StaticResource Loc}, Path=[Rename]}" TextColor="Black" WidthRequest="80" HeightRequest="40" FontSize="10" Margin="40,5,0,0" Grid.Row="0" Grid.Column="0" Style="{StaticResource ChargedButton}" Clicked="Rename_Click"/>
+        <Button x:Name="Add" Text="+" WidthRequest="40" HeightRequest="40" TextColor="Black" Grid.Row="0" Margin="90,5,0,0" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="Add_Click"/>
+        <Button x:Name="Del" Text="-" WidthRequest="40" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="2" Margin="70,5,0,0" Style="{StaticResource ChargedButton}" Clicked="Del_Click"/>
+        <Button x:Name="Help" Text="?" WidthRequest="40" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="3" Margin="50,5,0,0" Style="{StaticResource ChargedButton}" Clicked="Help_Click"/>
+        <Picker x:Name="Language" WidthRequest="25" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="4" Margin="10,5,0,0" SelectedIndexChanged="LanguageSelector_SelectionChanged">
+            <Picker.ItemsSource>
+                <x:Array Type="{x:Type x:String}">
+                    <x:String>En</x:String>
+                    <x:String>Fr</x:String>
+                </x:Array>
+            </Picker.ItemsSource>
+        </Picker>
 
         <!-- Ligne 2 -->
-        <ImageButton x:Name="SyncTime" WidthRequest="50" HeightRequest="50" Margin="30,5,0,0" Source="Icone/synchro.png" Grid.Row="1" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="TimeSynchro"/>
-        <Button x:Name="ServeurConnect" TextColor="Black" x:FieldModifier="public" WidthRequest="50" Margin="15,5,0,0" HeightRequest="50" Background="Red" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="Serveur_Connect"/>
-        <Button x:Name="Back" TextColor="Black" WidthRequest="50" HeightRequest="50" Text="&#60;--" Margin="0,5,0,0" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
+        <ImageButton x:Name="SyncTime" WidthRequest="40" HeightRequest="40" Margin="30,5,0,0" Source="Icone/synchro.png" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="TimeSynchro"/>
+        <Button x:Name="ServeurConnect" TextColor="Black" x:FieldModifier="public" WidthRequest="40" Margin="15,5,0,0" HeightRequest="40" Background="Red" Grid.Row="1" Grid.Column="3" Style="{StaticResource ChargedButton}" Clicked="Serveur_Connect"/>
+        <Button x:Name="Back" TextColor="Black" WidthRequest="40" HeightRequest="40" Text="&#60;--" Margin="0,5,0,0" Grid.Row="1" Grid.Column="4" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
 
         <!--Ligne 3 -->
-        <Label x:Name="FolderName" TextColor="Black" FontSize="20" Text="S" Margin="5,0" Grid.Row="2" Grid.ColumnSpan="4"/>
+        <Label x:Name="FolderName" TextColor="Black" FontSize="20" Text="S" Margin="5,0" Grid.Row="2" Grid.ColumnSpan="5"/>
 
         <!--Ligne 4 -->
-        <ListView x:Name="AccountList" Grid.Row="3" HorizontalOptions="FillAndExpand" ItemsSource="{Binding AccountButtons}" Margin="10" Grid.ColumnSpan="4" BackgroundColor="White">
+        <ListView x:Name="AccountList" Grid.Row="3" HorizontalOptions="FillAndExpand" ItemsSource="{Binding AccountButtons}" Margin="10" Grid.ColumnSpan="5" BackgroundColor="White">
             <ListView.ItemTemplate>
                 <DataTemplate>
                     <ViewCell>

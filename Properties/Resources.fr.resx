@@ -126,18 +126,6 @@
   <data name="Confirm" xml:space="preserve">
     <value>Confirmer</value>
   </data>
-  <data name="ErrorExport" xml:space="preserve">
-    <value>Il y a un dossier vide veuillez le supprimer avant l'export</value>
-  </data>
-  <data name="ErrorExportQR" xml:space="preserve">
-    <value>Le répertoire {0} n'a pas pu être créé.</value>
-  </data>
-  <data name="Export" xml:space="preserve">
-    <value>Export</value>
-  </data>
-  <data name="ExportQR" xml:space="preserve">
-    <value>Enregistrer les QR codes</value>
-  </data>
   <data name="Import" xml:space="preserve">
     <value>Import</value>
   </data>
@@ -145,7 +133,7 @@
     <value>Entrez le nom du dossier</value>
   </data>
   <data name="IntAppVersion" xml:space="preserve">
-    <value>Numéro de version actuel : </value>
+    <value>Numéro de version actuel: {0}</value>
   </data>
   <data name="IntDeleteAccount" xml:space="preserve">
     <value>Le compte {0} a été supprimé avec succès.</value>
@@ -162,18 +150,6 @@
   <data name="IntDeleteFolder4" xml:space="preserve">
     <value>Le dossier {0} a été supprimé avec succès.</value>
   </data>
-  <data name="IntExport1" xml:space="preserve">
-    <value>Exporter vers fichier texte</value>
-  </data>
-  <data name="IntExport2" xml:space="preserve">
-    <value>Exporter vers fichier QRCode</value>
-  </data>
-  <data name="Txt1" xml:space="preserve">
-    <value>Fichiers texte (*.txt)|*.txt</value>
-  </data>
-  <data name="Txt2" xml:space="preserve">
-    <value>Sélectionnez un fichier texte</value>
-  </data>
   <data name="ErrorIntImport" xml:space="preserve">
     <value>Il y a une erreur dans votre fichier d'export veuillez vérifier et recommencer</value>
   </data>
@@ -189,7 +165,7 @@
   <data name="Rename" xml:space="preserve">
     <value>Renommée</value>
   </data>
-  <data name="Secret Key" xml:space="preserve">
+  <data name="SecretKey" xml:space="preserve">
     <value>Clé Secrète [A-Za-z0-9]:</value>
   </data>
   <data name="Server" xml:space="preserve">
@@ -197,18 +173,6 @@
   </data>
   <data name="Synchronization" xml:space="preserve">
     <value>Synchronisation</value>
-  </data>
-  <data name="TTDelete" xml:space="preserve">
-    <value>Clique droit sur le compte que vous souhaitez supprimer</value>
-  </data>
-  <data name="TTHorloge" xml:space="preserve">
-    <value>Synchronisation de l'horloge</value>
-  </data>
-  <data name="TTRename" xml:space="preserve">
-    <value>Clique droit sur le compte que vous souhaitez renommer</value>
-  </data>
-  <data name="TTServer" xml:space="preserve">
-    <value>Connection pour l'extension web et import/export</value>
   </data>
   <data name="IntNewAccount1" xml:space="preserve">
     <value>Pas de QR code trouver</value>
@@ -242,5 +206,50 @@
   </data>
   <data name="Encryption2" xml:space="preserve">
     <value>Erreur de décryption</value>
+  </data>
+  <data name="LangCode" xml:space="preserve">
+    <value />
+  </data>
+  <data name="SecretKey2" xml:space="preserve">
+    <value>Entrer la clé secrète</value>
+  </data>
+  <data name="NP1" xml:space="preserve">
+    <value>Entrez le réseau a scanner</value>
+  </data>
+  <data name="NP2" xml:space="preserve">
+    <value>Sélectionnez un adresse IP</value>
+  </data>
+  <data name="IntAdd2" xml:space="preserve">
+    <value>Ajouter un dossier</value>
+  </data>
+  <data name="ErrorIntAdd" xml:space="preserve">
+    <value>Le nom du dossier ne peut pas être vide.</value>
+  </data>
+  <data name="ErrorIntDelete" xml:space="preserve">
+    <value>Aucun compte sélectionné.</value>
+  </data>
+  <data name="Yes" xml:space="preserve">
+    <value>Oui</value>
+  </data>
+  <data name="No" xml:space="preserve">
+    <value>Non</value>
+  </data>
+  <data name="ErrorIntRename" xml:space="preserve">
+    <value>Aucun compte sélectionné.</value>
+  </data>
+  <data name="Sync1" xml:space="preserve">
+    <value>Désynchronisation</value>
+  </data>
+  <data name="Sync2" xml:space="preserve">
+    <value>L'heure de votre appareil est incorrecte !</value>
+  </data>
+  <data name="Sync3" xml:space="preserve">
+    <value>L'heure est bien synchroniser</value>
+  </data>
+  <data name="IntNewAccount" xml:space="preserve">
+    <value>Veuillez entrez une clé</value>
+  </data>
+  <data name="IntNP5" xml:space="preserve">
+    <value>Importer</value>
   </data>
 </root>

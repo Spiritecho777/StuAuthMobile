@@ -51,8 +51,8 @@ namespace StuAuthMobile.Classe
 
         public void DecryptFromFile(string inputFilePath, string outputFilePath)
         {
-            try
-            {
+            //try
+            //{
                 Debug.WriteLine(Password);
                 using (FileStream fileStream = new FileStream(inputFilePath, FileMode.Open))
                 {
@@ -90,15 +90,14 @@ namespace StuAuthMobile.Classe
                     }
                 }
             }
-            catch (CryptographicException ex)
+            /*catch (CryptographicException ex)
             {
+                var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
                 Device.BeginInvokeOnMainThread(async () =>
                 {
                     await Application.Current.MainPage.DisplayAlert(
-                        "Erreur de décryption",
-                        "Le fichier de données n'est pas lisible sur cette machine.\n" +
-                        "Il peut être corrompu ou la clé est incorrecte.\n\n" +
-                        "L'application va maintenant se fermer.",
+                        loc["Encryption2"],
+                        loc["Encryption1"],
                         "OK");
 
                     Debug.WriteLine("Erreur de décryption : " + ex.Message);
@@ -108,7 +107,6 @@ namespace StuAuthMobile.Classe
                     System.Diagnostics.Process.GetCurrentProcess().Kill();
                 });
             }
-        }
-
+        }*/
     }
 }

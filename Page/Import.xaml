@@ -29,8 +29,8 @@
             <ColumnDefinition Width="*"/>
         </Grid.ColumnDefinitions>
 
-        <Button x:Name="Confirm" Text="Confirmer" Grid.Row="1" WidthRequest="100" Margin="5" Grid.Column="1" HorizontalOptions="End" Style="{StaticResource ChargedButton}" Clicked="Confirm_Click"/>
-        <Button x:Name="Back" Grid.Row="1" Text="Retour" Grid.Column="0" Margin="5" HorizontalOptions="Start" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
+        <Button x:Name="Confirm" Text="{Binding Source={StaticResource Loc}, Path=[Confirm]}" Grid.Row="1" WidthRequest="100" Margin="5" Grid.Column="1" HorizontalOptions="End" Style="{StaticResource ChargedButton}" Clicked="Confirm_Click"/>
+        <Button x:Name="Back" Grid.Row="1" Text="{Binding Source={StaticResource Loc}, Path=[Back]}" Grid.Column="0" Margin="5" HorizontalOptions="Start" Style="{StaticResource ChargedButton}" Clicked="Back_Click"/>
 
         <ListView x:Name="ListOtp" ItemsSource="{Binding AccountListAdd}" BackgroundColor="White" Margin="5" Grid.ColumnSpan="2">
             <ListView.ItemTemplate>

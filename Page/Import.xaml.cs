@@ -92,6 +92,7 @@ public partial class Import : ContentPage
 
     private async void Confirm_Click(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         foreach (var item in AccountListAdd)
         {
             if (item.IsChecked)
@@ -112,7 +113,7 @@ public partial class Import : ContentPage
                         }
                         catch
                         {
-                            DisplayAlert("Erreur", "Il y a une erreur dans votre fichier d'export veuillez vérifier et recommencer", "OK");
+                            DisplayAlert(loc["Error"], loc["ErrorIntImport"], "OK");
                         }
                     }
                 }

@@ -36,6 +36,7 @@ public partial class NewAccount : ContentPage
 
     private void Confirm_click(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         if (!string.IsNullOrEmpty(SecretKey.Text))
         {
             string normalizeText = SecretKey.Text.Normalize(NormalizationForm.FormD);
@@ -46,13 +47,13 @@ public partial class NewAccount : ContentPage
             }
             else
             {
-                DisplayAlert("Erreur", "La clé que vous avez rentrez n'est pas correct", "OK");
+                DisplayAlert(loc["Error"], loc["IntNewAccount2"], "OK");
                 SecretKey.Text = string.Empty;
             }
         }
         else
         {
-            DisplayAlert("Erreur", "Veuillez entrez une clé", "OK");
+            DisplayAlert(loc["Error"], loc["IntNewAccount"], "OK");
         }
     }
 
@@ -80,6 +81,7 @@ public partial class NewAccount : ContentPage
     #region Méthode
     private string DecodeQRCode(string result)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         if (result != null)
         {
             if (result.Contains("migration"))
@@ -111,7 +113,7 @@ public partial class NewAccount : ContentPage
         }
         else
         {
-            DisplayAlert("Erreur","Pas de QR code trouver","OK");
+            DisplayAlert(loc["Error"], loc["IntNewAccount1"],"OK");
             return "Pas de QR code trouver";
         }
     }

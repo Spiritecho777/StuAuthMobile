@@ -1,10 +1,11 @@
-﻿using System.Threading;
-using System.IO;
-using Microsoft.Maui.Controls;
+﻿using Microsoft.Maui.Controls;
 using Microsoft.Maui.Storage;
-using System.Diagnostics;
-using StuAuthMobile.Page;
 using StuAuthMobile.Classe;
+using StuAuthMobile.Page;
+using System.Diagnostics;
+using System.Globalization;
+using System.IO;
+using System.Threading;
 
 namespace StuAuthMobile
 {
@@ -18,9 +19,22 @@ namespace StuAuthMobile
 
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
             {
+                var ex = e.ExceptionObject as Exception;
+                Debug.WriteLine($"Crash : {ex?.Message}");
+
                 CleanupBeforeExit();
             };
         }
+
+        /*protected override void OnStart()
+        {
+            base.OnStart();
+
+            string savedLang = Preferences.Get("LangCode","en");
+
+            var loc = (Loc)Application.Current.Resources["Loc"];
+            loc.Culture = new CultureInfo(savedLang);
+        }*/
 
         public static void CleanupBeforeExit()
         {

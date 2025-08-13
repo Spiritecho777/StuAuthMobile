@@ -1,15 +1,16 @@
-using StuAuthMobile.Classe;
+ï»¿using Microsoft.Maui.ApplicationModel;
 using Microsoft.Maui.Controls.PlatformConfiguration;
+using Microsoft.Maui.Controls.Shapes;
+using Microsoft.VisualBasic;
+using StuAuthMobile.Classe;
+using System.Collections.Generic;
 using System.Collections.ObjectModel;
 using System.Diagnostics;
-using Microsoft.Maui.Controls.Shapes;
-using static System.Net.Mime.MediaTypeNames;
-using System.Collections.Generic;
-using Microsoft.VisualBasic;
-using System.Net.NetworkInformation;
+using System.Globalization;
 using System.Net;
+using System.Net.NetworkInformation;
 using System.Text.Json;
-using Microsoft.Maui.ApplicationModel;
+using static System.Net.Mime.MediaTypeNames;
 
 #if ANDROID
 using Android.Content;
@@ -37,6 +38,18 @@ public partial class Main : ContentPage
     public Main(MainPage page)
 	{
 		InitializeComponent();
+        switch (Preferences.Get("LangCode","en"))
+        {
+            case "en":
+                Language.SelectedIndex = 0;
+                break;
+            case "fr":
+                Language.SelectedIndex = 1;
+                break;
+            default:
+                Language.SelectedIndex = 0;
+                break;
+        }
         pages = page;
         server = new HttpServer(this);
         AccountList.ItemsSource = AccountButtons;
@@ -190,6 +203,7 @@ public partial class Main : ContentPage
     #region Bouton
     private async void Add_Click(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         if (pages != null) //Compte
         {
             string Folder = FolderName.Text.ToString();
@@ -199,11 +213,11 @@ public partial class Main : ContentPage
             }
             else //Dossier
             {
-                string FolderN = await DisplayPromptAsync("Ajouter un dossier","Entrez le nom du dossier");
+                string FolderN = await DisplayPromptAsync(loc["IntAdd2"], loc["IntAdd"]);
 
                 if (string.IsNullOrWhiteSpace(FolderN))
                 {
-                    await DisplayAlert("Erreur", "Le nom du dossier ne peut pas être vide.", "OK");
+                    await DisplayAlert(loc["Error"], loc["ErrorIntAdd"], "OK");
                     return;
                 }
 
@@ -215,10 +229,11 @@ public partial class Main : ContentPage
 
     private async void Del_Click(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         string folder = FolderName.Text?.ToString();
         if (selectedItem == null)
         {
-            DisplayAlert("Erreur", "Aucun compte sélectionné.", "OK");
+            DisplayAlert(loc["Error"], loc["ErrorIntDelete"], "OK");
             return;
         }
 
@@ -230,7 +245,7 @@ public partial class Main : ContentPage
             {
                 if (accountManager.DeleteFolderOrAccount(name, isFolder: false))
                 {
-                    DisplayAlert("Info",$"Le compte '{name}' a été supprimé avec succès.","OK");
+                    DisplayAlert("Info", loc["IntDeleteAccount",name],"OK");
                     selectedItem = null;
                 }
             }
@@ -240,34 +255,30 @@ public partial class Main : ContentPage
 
                 if (!deleted)
                 {
-                    bool confirm = await DisplayAlert("Confirmation de suppression",$"Le dossier '{name}' contient des comptes. Voulez-vous le supprimer ainsi que tous ses comptes ?",
-                        "Oui",
-                        "Non"
+                    bool confirm = await DisplayAlert(loc["IntDeleteFolder2"], loc["IntDeleteFolder1",name],
+                        loc["Yes"],
+                        loc["No"]
                     );
 
                     if (confirm)
                     {
                         if (accountManager.DeleteFolderOrAccount(name, isFolder: true, force: true))
                         {
-                            DisplayAlert("Info",$"Le dossier '{name}' et tous ses comptes ont été supprimés.","OK");
+                            DisplayAlert("Info",loc["IntDeleteFolder3",name],"OK");
                         }
                     }
                 }
                 else
                 {
-                    DisplayAlert("Info",$"Le dossier '{name}' a été supprimé avec succès.","OK");
+                    DisplayAlert("Info", loc["IntDeleteFolder4",name],"OK");
                 }
-                /*if (accountManager.DeleteFolderOrAccount(name, isFolder: true))
-                {
-                    DisplayAlert("Info",$"Le dossier '{name}' a été supprimé avec succès.","OK");
-                }*/
             }
 
             UpdateFolderList();
         }
         catch (InvalidOperationException ex)
         {
-            DisplayAlert("Erreur",ex.Message,"OK");
+            DisplayAlert(loc["Error"],ex.Message,"OK");
         }
     }
 
@@ -289,14 +300,15 @@ public partial class Main : ContentPage
 
     private async void Rename_Click(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         string folder = FolderName.Text?.ToString();
         if (selectedItem == null)
         {
-            DisplayAlert("Erreur", "Aucun compte sélectionné.", "OK");
+            DisplayAlert(loc["Error"], loc["ErrorIntRename"], "OK");
             return;
         }
         string oldName = selectedItem.Text.ToString();
-        string newName = await DisplayPromptAsync("Renommée", "Entrez le nouveau nom");
+        string newName = await DisplayPromptAsync(loc["Rename"], loc["IntRename"]);
 
         if (!string.IsNullOrEmpty(newName))
         {
@@ -320,19 +332,21 @@ public partial class Main : ContentPage
 
     private void Help_Click(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         string version = AppInfo.VersionString;
-        DisplayAlert("Numéro de version", $"Numero de version actuel : {version}", "OK");
+        DisplayAlert("Version", loc["IntAppVersion",version], "OK");
     }
 
     private async void TimeSynchro(object sender, EventArgs e)
     {
-        DateTime localTime = DateTime.Now;  // Heure du téléphone
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
+        DateTime localTime = DateTime.Now;  // Heure du tÃ©lÃ©phone
         DateTime networkTime = await GetNetworkTimeAsync();
         TimeSpan difference = networkTime - localTime;
 
         if (Math.Abs(difference.TotalSeconds) > 10)
         {
-            DisplayAlert("Desynchronisation", "L'heure de votre appareil est incorrecte !", "OK");
+            DisplayAlert(loc["Sync1"], loc["Sync2"], "OK");
 #if ANDROID
             await OpenDateTimeSettings();
 #elif IOS || MACCATALYST
@@ -341,7 +355,7 @@ public partial class Main : ContentPage
         }
         else
         {
-            DisplayAlert("Synchronisation", "L'heure est bien synchroniser", "OK");
+            DisplayAlert(loc["Synchronization"], loc["Sync3"], "OK");
         }
     }
 
@@ -350,9 +364,24 @@ public partial class Main : ContentPage
         UpdateFolderList();
     }
 
-#endregion
+    private void LanguageSelector_SelectionChanged(object sender, EventArgs e)
+    {
+        var selectedLang = Language.SelectedItem as string;
+        if (!string.IsNullOrEmpty(selectedLang))
+        {
+            var culture = new CultureInfo(selectedLang);
+            Thread.CurrentThread.CurrentCulture = culture;
+            Thread.CurrentThread.CurrentUICulture = culture;
 
-    #region Méthode
+            Preferences.Set("LangCode", selectedLang);
+
+            var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
+            loc.Culture = culture;
+        }
+    }
+    #endregion
+
+    #region MÃ©thode
     public async Task<DateTime> GetNetworkTimeAsync()
     {
         try
@@ -368,7 +397,7 @@ public partial class Main : ContentPage
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Erreur de récupération de l'heure NTP: {ex.Message}");
+            Debug.WriteLine($"Erreur de rÃ©cupÃ©ration de l'heure NTP: {ex.Message}");
         }
 
         return DateTime.UtcNow; // Fallback si erreur
@@ -386,7 +415,7 @@ public partial class Main : ContentPage
         }
         catch (Exception ex)
         {
-            Debug.WriteLine($"Erreur lors de l'ouverture des paramètres : {ex.Message}");
+            Debug.WriteLine($"Erreur lors de l'ouverture des paramÃ¨tres : {ex.Message}");
         }
     }
     #endregion

@@ -206,6 +206,7 @@ public partial class NetworkParameters : ContentPage
 
     private async Task<string> SendRequestAsync(string endpoint, string method, string jsonData = null)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         using (var client = new HttpClient())
         {
             try
@@ -230,17 +231,17 @@ public partial class NetworkParameters : ContentPage
             }
             catch (HttpRequestException ex)
             {
-                await DisplayAlert("Erreur", "Le serveur n'est pas démarrer", "OK");
+                await DisplayAlert(loc["Error"], loc["IntNP4"], "OK");
                 return null;
             }
             catch (TaskCanceledException ex)
             {
-                await DisplayAlert("Erreur", $"Requête expirée : {ex.Message}", "OK");
+                Debug.WriteLine("Erreur", $"Requête expirée : {ex.Message}", "OK");
                 return null;
             }
             catch (Exception ex)
             {
-                await DisplayAlert("Erreur", $"Erreur inattendue : {ex.Message}", "OK");
+                Debug.WriteLine("Erreur", $"Erreur inattendue : {ex.Message}", "OK");
                 return null;
             }
         }
@@ -276,14 +277,15 @@ public partial class NetworkParameters : ContentPage
 
     private async void Sync(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         string answer = await DisplayActionSheet(
-        "Synchronisation",
-        "Annuler",
+        loc["Synchronization"],
+        loc["Cancel"],
         null,
-        "Importer"
+        loc["IntNP5"]
         );
 
-        if (answer == "Importer")
+        if (answer == loc["IntNP5"]) //Pas sur de celle la
         {
             if (!string.IsNullOrWhiteSpace(IPApplication) && IsHostReachable(IPApplication))
             {
@@ -347,7 +349,7 @@ public partial class NetworkParameters : ContentPage
             }
             else
             {
-                await DisplayAlert("Erreur", "L'adresse IP n'est pas valide ou inaccessible.", "OK");
+                await DisplayAlert(loc["Error"], loc["IntNP2"], "OK");
             }
         }      
     }
@@ -355,6 +357,7 @@ public partial class NetworkParameters : ContentPage
 
     private async void AppNetworkChanged(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         MainThread.BeginInvokeOnMainThread(() => AppIP.ItemsSource = null);
         if (!string.IsNullOrEmpty(AppNetwork.Text) && IsValidIPAddress(AppNetwork.Text))
         {
@@ -364,7 +367,7 @@ public partial class NetworkParameters : ContentPage
         }
         else
         {
-            DisplayAlert("Erreur", "Veuillez rentrer un réseau correct exemple: 192.168.1", "OK");
+            DisplayAlert(loc["Error"], loc["IntNP3"], "OK");
         }
     }
     #endregion

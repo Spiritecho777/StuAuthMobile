@@ -29,8 +29,8 @@
         </Grid.ColumnDefinitions>
 
         <Entry x:Name="AccountName" TextColor="Black" Grid.ColumnSpan="2" Grid.Row="0" HorizontalOptions="FillAndExpand" HeightRequest="50" Margin="0,70,0,10"/>
-        
-        <Button x:Name="Save" Grid.Row="1" Grid.Column="0" Text="Enregistrer" WidthRequest="100" HorizontalOptions="Start" Margin="5,0" Clicked="SaveNewAccount" Style="{StaticResource ChargedButton}"/>
-        <Button x:Name="Annuler" Grid.Row="1" Grid.Column="1" Text="Retour" WidthRequest="80" HorizontalOptions="End" Margin="5,0" Clicked="Back" Style="{StaticResource ChargedButton}"/>
+
+        <Button x:Name="Save" Grid.Row="1" Grid.Column="0" Text="{Binding Source={StaticResource Loc}, Path=[Register]}" WidthRequest="100" HorizontalOptions="Start" Margin="5,0" Clicked="SaveNewAccount" Style="{StaticResource ChargedButton}"/>
+        <Button x:Name="Annuler" Grid.Row="1" Grid.Column="1" Text="{Binding Source={StaticResource Loc}, Path=[Back]}" WidthRequest="80" HorizontalOptions="End" Margin="5,0" Clicked="Back" Style="{StaticResource ChargedButton}"/>
     </Grid>
 </ContentPage>

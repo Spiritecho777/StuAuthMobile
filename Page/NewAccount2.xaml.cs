@@ -20,6 +20,7 @@ public partial class NewAccount2 : ContentPage
 
     private async void SaveNewAccount(object sender, EventArgs e)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         if (!string.IsNullOrEmpty(AccountName.Text))
         {
             string[] part = otpauth.Split('/');
@@ -33,7 +34,7 @@ public partial class NewAccount2 : ContentPage
         }
         else
         {
-            await DisplayAlert("","Veuillez entrez un nom de compte","OK");
+            await DisplayAlert("", loc["IntNewAccountP2"],"OK");
         }
     }
 
