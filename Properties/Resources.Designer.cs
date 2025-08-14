@@ -241,6 +241,15 @@ namespace StuAuthMobile.Properties {
         }
         
         /// <summary>
+        ///   Recherche une chaîne localisée semblable à 0.
+        /// </summary>
+        internal static string InterfaceSelect {
+            get {
+                return ResourceManager.GetString("InterfaceSelect", resourceCulture);
+            }
+        }
+        
+        /// <summary>
         ///   Recherche une chaîne localisée semblable à Please enter a key.
         /// </summary>
         internal static string IntNewAccount {
@@ -318,6 +327,24 @@ namespace StuAuthMobile.Properties {
         internal static string IntNP5 {
             get {
                 return ResourceManager.GetString("IntNP5", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à IP not found.
+        /// </summary>
+        internal static string IntNP6 {
+            get {
+                return ResourceManager.GetString("IntNP6", resourceCulture);
+            }
+        }
+        
+        /// <summary>
+        ///   Recherche une chaîne localisée semblable à Interface not selected.
+        /// </summary>
+        internal static string IntNP7 {
+            get {
+                return ResourceManager.GetString("IntNP7", resourceCulture);
             }
         }
         

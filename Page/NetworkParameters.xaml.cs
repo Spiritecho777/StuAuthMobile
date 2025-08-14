@@ -1,13 +1,13 @@
 namespace StuAuthMobile.Page;
 using StuAuthMobile.Classe;
-using System.Net.NetworkInformation;
-using System.Net;
-using System.Diagnostics;
-using System.Text.RegularExpressions;
 using System.Collections.ObjectModel;
+using System.Diagnostics;
+using System.Net;
+using System.Net.NetworkInformation;
 using System.Net.Sockets;
-using Xamarin.Essentials;
 using System.Text.Json;
+using System.Text.RegularExpressions;
+using Xamarin.Essentials;
 
 public partial class NetworkParameters : ContentPage
 {
@@ -20,6 +20,7 @@ public partial class NetworkParameters : ContentPage
     public NetworkParameters(Main main, HttpServer server, AccountManager accountManager)
     {
         InitializeComponent();
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         this.main = main;
         this.server = server;
         this.accountManager = accountManager;
@@ -27,8 +28,19 @@ public partial class NetworkParameters : ContentPage
         AppIP.ItemsSource = listIPA;
         AppIP.Title = IPApplication;
 
-        string ipAdress = GetLocalIPAddress();
-        ServIP.Text = ipAdress;
+        LoadNetworkInterfaces();
+        int savedIndex = int.Parse(Preferences.Get("InterfaceSelect", "0"));
+        ListInterface.SelectedIndex = savedIndex;
+
+        if (ListInterface.SelectedItem is NetworkInterfaceInfo selectedInterface)
+        {
+            string ipAdress = GetLocalIPAddress(selectedInterface.Name);
+            ServIP.Text = ipAdress;
+        }
+        else
+        {
+            ServIP.Text = loc["IntNP7"];
+        }
 
         if (!main.isServerRunning)
         {
@@ -50,22 +62,26 @@ public partial class NetworkParameters : ContentPage
     }
 
     #region Reseau
-    private string GetLocalIPAddress()
+    private string GetLocalIPAddress(string interfaceName)
     {
+        var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
         try
         {
-            foreach (var netInterface in System.Net.NetworkInformation.NetworkInterface.GetAllNetworkInterfaces())
+            foreach (var netInterface in NetworkInterface.GetAllNetworkInterfaces())
             {
-                if (netInterface.OperationalStatus == System.Net.NetworkInformation.OperationalStatus.Up)
+                if (netInterface.Name != interfaceName)
+                    continue;
+
+                if (netInterface.OperationalStatus != OperationalStatus.Up)
+                    continue;
+
+                foreach (var addr in netInterface.GetIPProperties().UnicastAddresses)
                 {
-                    foreach (var addr in netInterface.GetIPProperties().UnicastAddresses)
+                    if (addr.Address.AddressFamily == AddressFamily.InterNetwork &&
+                        !addr.Address.ToString().StartsWith("127.") &&
+                        !addr.Address.ToString().StartsWith("169.254."))
                     {
-                        if (addr.Address.AddressFamily == AddressFamily.InterNetwork &&
-                            !addr.Address.ToString().StartsWith("127.") &&  // Ignorer localhost
-                            !addr.Address.ToString().StartsWith("169.254.")) // Ignorer APIPA (auto-assignée)
-                        {
-                            return addr.Address.ToString();
-                        }
+                        return addr.Address.ToString();
                     }
                 }
             }
@@ -75,7 +91,7 @@ public partial class NetworkParameters : ContentPage
             Console.WriteLine($"Erreur : {ex.Message}");
         }
 
-        return "IP introuvable";
+        return loc["IntNP6"];
     }
 
     private bool IsValidIPAddress(string ipAddress)
@@ -246,6 +262,20 @@ public partial class NetworkParameters : ContentPage
             }
         }
     }
+
+    private void LoadNetworkInterfaces()
+    {
+        var interfaces = NetworkInterface.GetAllNetworkInterfaces()
+            .Where(ni => ni.OperationalStatus == OperationalStatus.Up)
+            .Select(ni => new NetworkInterfaceInfo
+            {
+                Name = ni.Name,
+                Description = ni.Description
+            })
+            .ToList();
+
+        ListInterface.ItemsSource = interfaces;
+    }
     #endregion
 
     #region Control
@@ -285,7 +315,7 @@ public partial class NetworkParameters : ContentPage
         loc["IntNP5"]
         );
 
-        if (answer == loc["IntNP5"]) //Pas sur de celle la
+        if (answer == loc["IntNP5"])
         {
             if (!string.IsNullOrWhiteSpace(IPApplication) && IsHostReachable(IPApplication))
             {
@@ -354,7 +384,6 @@ public partial class NetworkParameters : ContentPage
         }      
     }
 
-
     private async void AppNetworkChanged(object sender, EventArgs e)
     {
         var loc = (Loc)Microsoft.Maui.Controls.Application.Current.Resources["Loc"];
@@ -370,5 +399,24 @@ public partial class NetworkParameters : ContentPage
             DisplayAlert(loc["Error"], loc["IntNP3"], "OK");
         }
     }
+
+    private void ChangedInterface(object sender, EventArgs e)
+    {
+        if (ListInterface.SelectedItem is NetworkInterfaceInfo selectedInterface)
+        {
+            string ipAddress = GetLocalIPAddress(selectedInterface.Name);
+            ServIP.Text = ipAddress;
+
+            Preferences.Set("InterfaceSelect", ListInterface.SelectedIndex.ToString());
+        }
+    }
     #endregion
+}
+
+public class NetworkInterfaceInfo
+{
+    public string Name { get; set; }
+    public string Description { get; set; }
+
+    public override string ToString() => $"{Name} - {Description}";
 }

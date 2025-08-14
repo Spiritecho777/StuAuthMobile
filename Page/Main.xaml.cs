@@ -38,7 +38,38 @@ public partial class Main : ContentPage
     public Main(MainPage page)
 	{
 		InitializeComponent();
-        switch (Preferences.Get("LangCode","en"))
+        Language.ItemsSource = new List<string> { "Br", "En", "Fr", "Ja" };
+        switch (Preferences.Get("LangCode","En"))
+        {
+            case "Br":
+                Language.SelectedIndex = 0;
+                break;
+            case "En":
+                Language.SelectedIndex = 1;
+                break;
+            case "Fr":
+                Language.SelectedIndex = 2;
+                break;
+            case "Ja":
+                Language.SelectedIndex = 3;
+                break;
+            default:
+                Language.SelectedIndex = 1;
+                break;
+        }
+        pages = page;
+        server = new HttpServer(this);
+        AccountList.ItemsSource = AccountButtons;
+        UpdateFolderList();
+    }
+
+    /*protected override void OnAppearing()
+    {
+        base.OnAppearing();
+
+        Language.ItemsSource = new List<string> { "En", "Fr" };
+        string lang = Preferences.Get("LangCode", "en");
+        switch (lang)
         {
             case "en":
                 Language.SelectedIndex = 0;
@@ -50,11 +81,8 @@ public partial class Main : ContentPage
                 Language.SelectedIndex = 0;
                 break;
         }
-        pages = page;
-        server = new HttpServer(this);
-        AccountList.ItemsSource = AccountButtons;
-        UpdateFolderList();
-    }
+    }*/
+
 
     #region Liste
     #region Dossier

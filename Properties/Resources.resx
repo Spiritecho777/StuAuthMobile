@@ -258,4 +258,13 @@
   <data name="IntNP5" xml:space="preserve">
     <value>Import</value>
   </data>
+  <data name="InterfaceSelect" xml:space="preserve">
+    <value>0</value>
+  </data>
+  <data name="IntNP6" xml:space="preserve">
+    <value>IP not found</value>
+  </data>
+  <data name="IntNP7" xml:space="preserve">
+    <value>Interface not selected</value>
+  </data>
 </root>

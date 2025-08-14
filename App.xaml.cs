@@ -15,6 +15,11 @@ namespace StuAuthMobile
         {
             InitializeComponent();
 
+            string savedLang = Preferences.Get("LangCode", "en");
+
+            var loc = (Loc)Application.Current.Resources["Loc"];
+            loc.Culture = new CultureInfo(savedLang);
+
             MainPage = new AppShell();
 
             AppDomain.CurrentDomain.UnhandledException += (sender, e) =>
@@ -25,16 +30,6 @@ namespace StuAuthMobile
                 CleanupBeforeExit();
             };
         }
-
-        /*protected override void OnStart()
-        {
-            base.OnStart();
-
-            string savedLang = Preferences.Get("LangCode","en");
-
-            var loc = (Loc)Application.Current.Resources["Loc"];
-            loc.Culture = new CultureInfo(savedLang);
-        }*/
 
         public static void CleanupBeforeExit()
         {

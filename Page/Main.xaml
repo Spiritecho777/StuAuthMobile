@@ -45,14 +45,7 @@
         <Button x:Name="Add" Text="+" WidthRequest="40" HeightRequest="40" TextColor="Black" Grid.Row="0" Margin="90,5,0,0" Grid.Column="1" Style="{StaticResource ChargedButton}" Clicked="Add_Click"/>
         <Button x:Name="Del" Text="-" WidthRequest="40" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="2" Margin="70,5,0,0" Style="{StaticResource ChargedButton}" Clicked="Del_Click"/>
         <Button x:Name="Help" Text="?" WidthRequest="40" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="3" Margin="50,5,0,0" Style="{StaticResource ChargedButton}" Clicked="Help_Click"/>
-        <Picker x:Name="Language" WidthRequest="25" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="4" Margin="10,5,0,0" SelectedIndexChanged="LanguageSelector_SelectionChanged">
-            <Picker.ItemsSource>
-                <x:Array Type="{x:Type x:String}">
-                    <x:String>En</x:String>
-                    <x:String>Fr</x:String>
-                </x:Array>
-            </Picker.ItemsSource>
-        </Picker>
+        <Picker x:Name="Language" WidthRequest="25" HeightRequest="40" TextColor="Black" Grid.Row="0" Grid.Column="4" Margin="10,5,0,0" SelectedIndexChanged="LanguageSelector_SelectionChanged"/>
 
         <!-- Ligne 2 -->
         <ImageButton x:Name="SyncTime" WidthRequest="40" HeightRequest="40" Margin="30,5,0,0" Source="Icone/synchro.png" Grid.Row="1" Grid.Column="2" Style="{StaticResource ChargedButton}" Clicked="TimeSynchro"/>

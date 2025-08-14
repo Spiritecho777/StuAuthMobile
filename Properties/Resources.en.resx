@@ -244,12 +244,21 @@
     <value>The time on your device is incorrect!</value>
   </data>
   <data name="Sync3" xml:space="preserve">
-    <value />
+    <value>The time is well synchronized</value>
   </data>
   <data name="IntNewAccount" xml:space="preserve">
     <value>Please enter a key</value>
   </data>
   <data name="IntNP5" xml:space="preserve">
     <value>Import</value>
+  </data>
+  <data name="InterfaceSelect" xml:space="preserve">
+    <value />
+  </data>
+  <data name="IntNP6" xml:space="preserve">
+    <value>IP not found</value>
+  </data>
+  <data name="IntNP7" xml:space="preserve">
+    <value>Interface not selected</value>
   </data>
 </root>
